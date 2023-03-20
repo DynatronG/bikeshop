@@ -1,20 +1,26 @@
 {
-  ("prettier/prettier");
-  [
-    "error",
-    {
-      singleQuote: true,
-      parser: "flow",
-      //usePrettierrc: false,
-      //Добавленные параметры
-      semi: true,
-      printWidth: 80,
-      endOfLine: "auto",
-      tabwidth: 4,
-    },
-  ];
-  module.exports = {
-    //trailingComma: "all",
-    bracketSpacing: true,
-  };
+        ("prettier/prettier");
+        [
+                "error",
+                {
+                        // singleQuote: true,
+                        parser: "babel",
+                        // usePrettierrc: false,
+                        //Добавленные параметры
+                        semi: false,
+                        endOfLine: "auto",
+                        //       tabwidth: 4,
+                },
+        ];
+        module.exports = {
+                // trailingComma: "none",
+                tabWidth: 8,
+                usetabs: false,
+                bracketSpacing: true,
+                jsxSingleQuotes: true,
+                arrowParents: "avoid",
+                printWidth: 80,
+                //     usePrettierrc: false,
+                // singleQuote: true,
+        };
 }

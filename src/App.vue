@@ -1,63 +1,70 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
-  <div class="wrapper">
-    <header-block></header-block>
-    <main>
-      <search-block></search-block>
-      <div>
-        <input
-          type="text"
-          v-on:keypress.enter="addBlock"
-          v-model="inputValue"
-        />
-        <button v-on:click="addBlock">Добавить</button>
-      </div>
-      <div class="mainBlock">
-        <div class="blocks" v-for="(item, index) in blocks" v-bind:key="index">
-          <p>{{ item }}:{{ index }}</p>
-          <button v-on:click="delBlock(index)">Удалить</button>
+        <div class="wrapper">
+                <header-block></header-block>
+                <main>
+                        <search-block></search-block>
+                        <!-- <post-form></post-form> -->
+                        <div>
+                                <p>Выбрано мотоциклов: {{ postsCount }}</p>
+                                <button @click="debugPosts">Очистить</button>
+                        </div>
+                        <div class="mainBlock">
+                                <div
+                                        class="blocks"
+                                        v-for="item in posts"
+                                        :key="item.id"
+                                >
+                                        <p>
+                                                {{ item.id }}
+                                                {{ item.company }}
+                                                {{ item.model }} {{ item.cc }}
+                                        </p>
+                                        <img
+                                                class="img_blocks"
+                                                :src="
+                                                        require(`@/assets/img/moto${item.image}`)
+                                                "
+                                        />
+                                </div>
+                        </div>
+                        <div>
+                                <hr />
+                        </div>
+                </main>
+                <footer-block></footer-block>
         </div>
-      </div>
-      <div>
-        Выбрано мотоциклов: {{ this.blocks.length }} Удвоение:
-        {{ doubleCount }}
-        <hr />
-      </div>
-    </main>
-    <footer-block></footer-block>
-  </div>
 </template>
 
 <script>
-import headerBlock from "@/components/headerBlock.vue";
-import SearchBlock from "@/components/searchBlock.vue";
-import FooterBlock from "@/components/footerBlock.vue";
+import headerBlock from "@/components/header-block.vue";
+import SearchBlock from "@/components/search-block.vue";
+import FooterBlock from "@/components/footer-block.vue";
+// import PostForm from "./components/post-form.vue";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
-  components: { headerBlock, SearchBlock, FooterBlock },
-  name: "App",
-  data() {
-    return {
-      inputValue: "",
-      count: 10,
-      blocks: ["oneBlock", "twoBlock", "threeBlock", "fothBlock", "fifthBlock"],
-    };
-  },
-  methods: {
-    delBlock(index) {
-      this.blocks.splice(index, 1);
-    },
-    addBlock() {
-      if (this.inputValue !== "") {
-        this.blocks.push(this.inputValue);
-        this.inputValue = "";
-      }
-    },
-  },
-  computed: {
-    doubleCount() {
-      console.log("doubleCount");
-      return this.blocks.length * 2;
-    },
-  },
+        components: {
+                headerBlock,
+                SearchBlock,
+                FooterBlock,
+                // PostForm,
+        },
+        name: "App",
+        methods: {
+                ...mapActions({
+                        fetchPosts: "fetchPosts",
+                }),
+        },
+        computed: {
+                ...mapGetters({
+                        posts: "allPosts",
+                        postsCount: "postsCount",
+                }),
+        },
+        async mounted() {
+                this.fetchPosts();
+        },
 };
 </script>
 

@@ -1,0 +1,84 @@
+{
+  "bikes": [
+    {
+      "id": 0,
+      "image": "/honda/cb_750_1995_001.jpg",
+      "company": "Honda",
+      "model": "cb",
+      "cc": 750,
+      "year": 1995,
+      "price": 3200,
+      "available": true
+    },
+    {
+      "id": 1,
+      "image": "/honda/cb_750_1996_001.jpg",
+      "company": "Honda",
+      "model": "cb",
+      "cc": 750,
+      "year": 1996,
+      "price": 2500,
+      "available": true
+    },
+    {
+      "id": 2,
+      "image": "/honda/cbr_250_1994_001.jpg",
+      "company": "Honda",
+      "model": "cbr",
+      "cc": 250,
+      "year": 1994,
+      "price": 3700,
+      "available": true
+    },
+    {
+      "id": 3,
+      "image": "/honda/cbr_250_1995_001.jpg",
+      "company": "Honda",
+      "model": "cbr",
+      "cc": 250,
+      "year": 1995,
+      "price": 2500,
+      "available": false
+    },
+    {
+      "id": 4,
+      "image": "/honda/cbr_250_1997_002.jpg",
+      "company": "Honda",
+      "model": "cbr",
+      "cc": 250,
+      "year": 1997,
+      "price": 2500,
+      "available": true
+    },
+    {
+      "id": 5,
+      "image": "/suzuki/drz_250_2004_001.jpg",
+      "company": "Suzuki",
+      "model": "drz",
+      "cc": 250,
+      "year": 2004,
+      "price": 2300,
+      "available": true
+    },
+    {
+      "id": 6,
+      "image": "/suzuki/drz_450_2005_001.jpg",
+      "company": "Suzuki",
+      "model": "drz",
+      "cc": 450,
+      "year": 2005,
+      "price": 2300,
+      "available": true
+    },
+    {
+      "id": 7,
+      "image": "/suzuki/drz_450_2008_001.jpg",
+      "company": "Suzuki",
+      "model": "drz",
+      "cc": 450,
+      "year": 2008,
+      "price": 3300,
+      "available": true
+    }
+  ]
+}
