@@ -1,9 +1,8 @@
 <template>
         <div>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id est
-                iure asperiores quaerat excepturi ullam ab nihil, quis aliquam
-                eius voluptatem sunt nostrum eligendi harum. Odio est deleniti
-                eveniet dolores?
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id est iure asperiores
+                quaerat excepturi ullam ab nihil, quis aliquam eius voluptatem sunt nostrum eligendi
+                harum. Odio est deleniti eveniet dolores?
         </div>
         <button class="mainButton">
                 <slot></slot>

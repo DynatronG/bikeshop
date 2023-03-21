@@ -70,4 +70,4 @@ export default {
         },
 };
 </script>
-<style src="@/assets/index.css"></style>
+<style></style>

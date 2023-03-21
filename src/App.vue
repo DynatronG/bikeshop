@@ -10,11 +10,7 @@
                                 <button @click="debugPosts">Очистить</button>
                         </div>
                         <div class="mainBlock">
-                                <div
-                                        class="blocks"
-                                        v-for="item in posts"
-                                        :key="item.id"
-                                >
+                                <div class="blocks" v-for="item in posts" :key="item.id">
                                         <p>
                                                 {{ item.id }}
                                                 {{ item.company }}
@@ -22,9 +18,7 @@
                                         </p>
                                         <img
                                                 class="img_blocks"
-                                                :src="
-                                                        require(`@/assets/img/moto${item.image}`)
-                                                "
+                                                :src="require(`@/assets/img/moto${item.image}`)"
                                         />
                                 </div>
                         </div>
@@ -40,7 +34,6 @@
 import headerBlock from "@/components/header-block.vue";
 import SearchBlock from "@/components/search-block.vue";
 import FooterBlock from "@/components/footer-block.vue";
-// import PostForm from "./components/post-form.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -68,4 +61,4 @@ export default {
 };
 </script>
 
-<style src="@/assets/index.css"></style>
+<style></style>

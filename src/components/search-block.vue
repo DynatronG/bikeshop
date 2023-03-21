@@ -8,8 +8,7 @@
         </div>
         <!---------- БЛОК МОДЕЛИ---------->
         <div class="block-search-child" v-if="searchParams == 'sm_models'">
-                <p v-for="item in company" :key="item">{{ item }}</p>
-                <!-- <button v-for="item in company" :key="item">{{ item }}</button> -->
+                <p class="searchOptions" v-for="item in company" :key="item">{{ item }}</p>
         </div>
 
         <!----------БЛОК ГОД---------->
@@ -39,12 +38,11 @@
                 </div>
                 <h4>Класс мотоцикла</h4>
                 <div class="block-search-child">
-                        <p v-for="item in cc" :key="item">{{ item }}</p>
+                        <p class="searchOptions" v-for="item in cc" :key="item">{{ item }}</p>
                 </div>
         </div>
         <!----------БЛОК ЦЕНА---------->
         <div class="block-search-child">
-                {{ progressbarPosition }}
                 <div class="block-price" v-if="searchParams == 'sm_price'">
                         <div class="range-input">
                                 <div class="progressbar">
@@ -59,7 +57,7 @@
                                         max="5000"
                                         v-model="price.min"
                                         step="10"
-                                        @click="progressbarGetMin"
+                                        @change="updateProgressbarPosition"
                                 />
                                 <input
                                         class="range-price"
@@ -70,13 +68,23 @@
                                         max="5000"
                                         v-model="price.max"
                                         step="10"
-                                        @click="progressbarGetMax"
+                                        @change="updateProgressbarPosition"
                                 />
                         </div>
                         <p>мин</p>
-                        <input class="input-data" type="number" v-model="price.min" />
+                        <input
+                                class="input-data"
+                                type="number"
+                                v-model="price.min"
+                                @change="updateProgressbarPosition"
+                        />
                         <p>макс</p>
-                        <input class="input-data" type="number" v-model="price.max" />
+                        <input
+                                class="input-data"
+                                type="number"
+                                v-model="price.max"
+                                @change="updateProgressbarPosition"
+                        />
                         <p>руб.</p>
                 </div>
         </div>
@@ -115,22 +123,22 @@ export default {
                         progressbarPosition: { min: 0, max: "100%" },
                 };
         },
+
+        // -------------------METHODS-------------------
         methods: {
                 switchSerchBlock(val) {
                         this.searchParams = val;
                 },
-                progressbarGetMax() {
-                        // let val = (5000 * 100) / this.price.max + "%";
-                        let val = (this.price.max * 100) / 5000;
-                        this.progressbarPosition.max = val + "%";
-                },
-                progressbarGetMin() {
-                        let val = (this.price.min * 100) / 5000;
-                        this.progressbarPosition.min = val + "%";
+                updateProgressbarPosition() {
+                        let max = (this.price.max * 100) / 5000 - (this.price.min * 100) / 5000;
+                        this.progressbarPosition.max = max + "%";
+                        let min = (this.price.min * 100) / 5000;
+                        this.progressbarPosition.min = min + "%";
                 },
         },
 };
 </script>
+
 //----------------------------------STYLE-------------------------------------------
 <style scoped>
 .block-search-main {
@@ -158,6 +166,10 @@ export default {
         display: flex;
         flex-flow: row wrap;
         justify-content: center;
+}
+p.searchOptions {
+        color: #eb5e28;
+        font-weight: bold;
 }
 /*-----------------------СЛАЙДЕР ------------------------*/
 /* блок слайдера */
@@ -194,7 +206,6 @@ export default {
         background: #ffffff;
         cursor: pointer;
         -webkit-appearance: none;
-        /* margin-top: -1px; */
         pointer-events: auto;
 }
 /* ползунок для файрфокса */
@@ -210,6 +221,7 @@ export default {
         /* margin-top: -1px; */
         pointer-events: auto;
 }
+/* прогресс бар */
 .progressbar {
         background-color: #fffcf2;
         appearance: none;
@@ -224,8 +236,9 @@ export default {
         -webkit-appearance: none;
         -moz-appearance: none;
 }
+/* полоса прогресс бара */
 .progressbarLine {
-        background-color: #50e515;
+        background-color: #eb5e28;
         appearance: none;
         width: v-bind("progressbarPosition.max");
         border-radius: 8px;
@@ -233,13 +246,13 @@ export default {
         margin: 0px;
         padding: 0px;
         position: absolute;
-        /* left: 0px; */
         left: v-bind("progressbarPosition.min");
         pointer-events: none;
         -webkit-appearance: none;
         -moz-appearance: none;
 }
 /*-------------------- INPUT--------------------*/
+
 /* убрать спинеры на на инпут для хрома */
 .input-data::-webkit-outer-spin-button,
 .input-data::-webkit-inner-spin-button {
@@ -271,6 +284,18 @@ select::-webkit-inner-spin-button {
         transition: box-shadow 0.3s ease-out;
 }
 .input-data:focus {
+        background-color: #fffcf2;
+}
+
+select {
+        box-shadow: 0px 0px 0px #403d39;
+        transition: box-shadow 0.3s ease-in;
+}
+select:hover {
+        box-shadow: 0px 0px 10px #403d39;
+        transition: box-shadow 0.3s ease-out;
+}
+select:focus {
         background-color: #fffcf2;
 }
 /* ---------------------------------------------------- */
