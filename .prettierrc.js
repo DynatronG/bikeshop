@@ -19,7 +19,7 @@
                 bracketSpacing: true,
                 jsxSingleQuotes: true,
                 arrowParents: "avoid",
-                printWidth: 80,
+                printWidth: 100,
                 //     usePrettierrc: false,
                 // singleQuote: true,
         };

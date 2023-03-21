@@ -1,20 +1,18 @@
 <template>
         <div class="block-search-main">
-                <button @click="searchMode('sm_models')">Модель</button>
-                <button @click="searchMode('sm_year')">Год</button>
-                <button @click="searchMode('sm_cc')">Класс и объем</button>
-                <button @click="searchMode('sm_price')">Цена</button>
-                <button @click="searchMode('sm_addition')">
-                        Дополнительно
-                </button>
+                <button @click="switchSerchBlock('sm_models')">Модель</button>
+                <button @click="switchSerchBlock('sm_year')">Год</button>
+                <button @click="switchSerchBlock('sm_cc')">Класс и объем</button>
+                <button @click="switchSerchBlock('sm_price')">Цена</button>
+                <button @click="switchSerchBlock('sm_addition')">Дополнительно</button>
         </div>
-        <!-- БЛОК МОДЕЛИ -->
+        <!---------- БЛОК МОДЕЛИ---------->
         <div class="block-search-child" v-if="searchParams == 'sm_models'">
                 <p v-for="item in company" :key="item">{{ item }}</p>
                 <!-- <button v-for="item in company" :key="item">{{ item }}</button> -->
         </div>
 
-        <!-- БЛОК ГОД -->
+        <!----------БЛОК ГОД---------->
         <div class="block-search-child" v-if="searchParams == 'sm_year'">
                 <p>от</p>
                 <select>
@@ -30,7 +28,7 @@
                 </select>
         </div>
 
-        <!-- БЛОК КЛАСС ОБЪЕМ -->
+        <!----------БЛОК КЛАСС ОБЪЕМ---------->
         <div class="block-search-child" v-if="searchParams == 'sm_cc'">
                 <h4>Объем двигателя в куб.см</h4>
                 <div class="block-search-child">
@@ -44,7 +42,7 @@
                         <p v-for="item in cc" :key="item">{{ item }}</p>
                 </div>
         </div>
-        <!-- БЛОК ЦЕНА -->
+        <!----------БЛОК ЦЕНА---------->
         <div class="block-search-child">
                 {{ progressbarPosition }}
                 <div class="block-price" v-if="searchParams == 'sm_price'">
@@ -76,21 +74,14 @@
                                 />
                         </div>
                         <p>мин</p>
-                        <input
-                                class="input-data"
-                                type="number"
-                                v-model="price.min"
-                        />
+                        <input class="input-data" type="number" v-model="price.min" />
                         <p>макс</p>
-                        <input
-                                class="input-data"
-                                type="number"
-                                v-model="price.max"
-                        />
+                        <input class="input-data" type="number" v-model="price.max" />
                         <p>руб.</p>
                 </div>
         </div>
 </template>
+//----------------------------------SCRIPT-------------------------------------------
 <script>
 export default {
         data() {
@@ -103,14 +94,12 @@ export default {
                                 { Kawasaki: ["zx", "klr", "klx"] },
                         ],
                         dateManufacture: [
-                                1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967,
-                                1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975,
-                                1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983,
-                                1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991,
-                                1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-                                2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-                                2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015,
-                                2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023,
+                                1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970,
+                                1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981,
+                                1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992,
+                                1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
+                                2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014,
+                                2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023,
                         ],
                         cc: [
                                 "Классический",
@@ -127,7 +116,7 @@ export default {
                 };
         },
         methods: {
-                searchMode(val) {
+                switchSerchBlock(val) {
                         this.searchParams = val;
                 },
                 progressbarGetMax() {
@@ -142,7 +131,7 @@ export default {
         },
 };
 </script>
-
+//----------------------------------STYLE-------------------------------------------
 <style scoped>
 .block-search-main {
         /* flex: 1; */

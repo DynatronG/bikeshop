@@ -9,10 +9,7 @@
                         <option value="3">Kawasaki</option>
                 </select>
                 <select name="model">
-                        <option
-                                v-for="optionModel in model[company]"
-                                :key="optionModel"
-                        >
+                        <option v-for="optionModel in model[company]" :key="optionModel">
                                 {{ optionModel[company] }}
                         </option>
                 </select>
