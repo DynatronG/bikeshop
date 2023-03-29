@@ -109,6 +109,9 @@ main {
     /* padding: 5px; */
     margin: 10px;
 }
+.blocks:hover{
+        outline: 2px solid #EB5E28;
+}
 
 .img_blocks {
     width: 230px;
@@ -118,8 +121,8 @@ main {
 
 
 hr {
-    background-color: #CCC5B9;
-    height: 3px;
+    background-color: #EB5E28;
+    height: 1px;
     border: 0px;
 }
 
@@ -144,7 +147,6 @@ button {
     user-select: none;
 
 }
-
 button:hover {
     background: #78746d;
     color: #FFFCF2;
@@ -163,15 +165,39 @@ select {
 }
 
 select {
-    width: 150px
+    width: 150px;
+    box-shadow: 0px 0px 0px #403d39;
+    transition: box-shadow 0.3s ease-in;
+}
+select:hover {
+        box-shadow: 0px 0px 10px #403d39;
+        transition: box-shadow 0.3s ease-out;
+}
+select:focus {
+        background-color: #fffcf2;
 }
 
 
 p {
+    /* display: block; */
     margin: 10px;
+    color: #eb5e28;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 h4 {
     width: 100%;
     margin: 10px;
+}
+h5{
+      display: inline-block;
+        font-size: 12pt;
+        margin: 10px;
+        color: #252422;
+}
+.txtNameBike{
+        color: #eb5e28; 
+        font-weight: normal;    
 }
