@@ -65,8 +65,6 @@
                         <input
                               class="range-price"
                               type="range"
-                              id="range-price"
-                              name="range-price"
                               min="0"
                               max="5000"
                               v-model="price.min"
@@ -76,8 +74,6 @@
                         <input
                               class="range-price"
                               type="range"
-                              id="range-price"
-                              name="range-price"
                               min="0"
                               max="5000"
                               v-model="price.max"
@@ -142,6 +138,11 @@
                   <h5 class="h5-modal">{{ currentDataSelected["currentmotoClass"] }}</h5>
                   <div class="div-delete" @click="currentDataSelected.currentmotoClass = ''"></div>
             </div>
+            <!-- Минимальная цена -->
+            <div class="modal-search-window" v-if="isActivateDate === true">
+                  <h5 class="h5-modal">от {{ price.min }} до {{ price.max }}</h5>
+                  <div class="div-delete" @click="isActivateDate = false"></div>
+            </div>
       </div>
 </template>
 
@@ -156,8 +157,7 @@ export default {
                         currentDateManufactureMax: "",
                         currentmotoClass: "",
                   },
-                  selectedVal: "",
-                  isActivateModalWindow: false,
+                  isActivateDate: false,
 
                   company: ["Honda", "Suzuky", "Yamaha", "Kawasaki"],
                   compImg: [
@@ -200,17 +200,18 @@ export default {
             switchSearchBlock(val) {
                   this.searchParams = val;
             },
+
             updateProgressbarPosition() {
                   let max = (this.price.max * 100) / 5000 - (this.price.min * 100) / 5000;
                   let min = (this.price.min * 100) / 5000;
-                  if (this.price.min < this.price.max) {
-                        this.progressbarPosition.max = max + "%";
-                        this.progressbarPosition.min = min + "%";
-                  } else if (this.price.min > this.price.max) {
+                  if (this.price.min > this.price.max) {
                         this.price.min = this.price.max - 100;
                         this.progressbarPosition.max = max + "%";
                         this.progressbarPosition.min = min + "%";
                   }
+                  this.progressbarPosition.min = min + "%";
+                  this.progressbarPosition.max = max + "%";
+                  this.isActivateDate = true;
             },
       },
 };
@@ -261,7 +262,7 @@ export default {
       background-color: #403d39;
       color: #eb5e28;
       /* position: absolute; */
-      width: 150px;
+      /* width: 150px; */
       height: 20px;
       padding: 10px;
       display: flex;

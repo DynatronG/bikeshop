@@ -7,6 +7,7 @@
                   <!-- <post-form></post-form> -->
                   <div>
                         <p>Выбрано мотоциклов: {{ postsCount }}</p>
+                        <p>Переменная - {{ vxVar }}</p>
                         <button>Очистить</button>
                   </div>
                   <div class="mainBlock">
@@ -34,12 +35,18 @@
 import headerBlock from "@/components/header-block.vue";
 import SearchBlock from "@/components/search-block.vue";
 import FooterBlock from "@/components/footer-block.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
       data() {
             return {
                   testProps: 10,
+                  counter: 0,
+            };
+      },
+      provide() {
+            return {
+                  countProvide: this.counter,
             };
       },
       components: {
@@ -59,6 +66,7 @@ export default {
             }),
       },
       computed: {
+            ...mapState(["vxVar"]),
             ...mapGetters({
                   posts: "allPosts",
                   postsCount: "postsCount",

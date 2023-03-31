@@ -1,12 +1,16 @@
 export const posts = {
       state: {
+            vxVar: 1222,
             dataPosts: [],
       },
 
       actions: {
-            async fetchPosts(context, limit = 1000) {
-                  const response = await fetch("http://localhost:3000/bikes?_limit=" + limit);
+            async fetchPosts(context) {
+                  // const response = await fetch("http://localhost:3000/bikes?_limit=" + limit);
+                  const response = await fetch("http://localhost:3000/bikes?company=Suzuki");
+                  // const posts = await response.json();
                   const posts = await response.json();
+
                   // this.dataPosts = posts;
                   context.commit("updatePosts", posts);
             },
@@ -16,9 +20,9 @@ export const posts = {
             updatePosts(state, posts) {
                   state.dataPosts = posts;
             },
-            createPost(state, newPost) {
-                  state.dataPosts.unshift(newPost);
-            },
+            // createPost(state, newPost) {
+            //       state.dataPosts.unshift(newPost);
+            // },
       },
 
       getters: {

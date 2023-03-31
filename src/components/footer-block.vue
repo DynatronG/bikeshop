@@ -1,5 +1,9 @@
 <template>
-      <footer class="footer"><button @click="myEmit">Обновить пропс</button>{{ testProps }}</footer>
+      <footer class="footer">
+            <button @click="myEmit">Обновить пропс</button>
+            {{ (countProvide += 10) }}
+            {{ testProps }}
+      </footer>
 </template>
 
 <script>
@@ -11,6 +15,7 @@ export default {
                   required: true,
             },
       },
+      inject: ["countProvide"],
       // emits: ["my-emit-func"],
       //Валидатор
       // emits: {
