@@ -50,9 +50,6 @@
       "price": 2500,
       "available": true
     },
-
-
-
     {
       "id": 5,
       "image": "/suzuki/drz_250_2004_001.jpg",
@@ -83,71 +80,65 @@
       "price": 3300,
       "available": false
     },
-
-
-
     {
-        "id": 8,
-        "image": "/yamaha/fz6r_600_2010.jpg",
-        "company": "yamaha",
-        "model": "fz6r",
-        "cc": 600,
-        "year": 2010,
-        "price": 2200,
-        "available": false
-      },
-      {
-        "id": 9,
-        "image": "/yamaha/wrf_250_2004.jpg",
-        "company": "yamaha",
-        "model": "wr250f",
-        "cc": 250,
-        "year": 2004,
-        "price": 2700,
-        "available": true
-      },
-      {
-        "id": 10,
-        "image": "/yamaha/wrf_400_2003.jpg",
-        "company": "yamaha",
-        "model": "wr400f",
-        "cc": 400,
-        "year": 2003,
-        "price": 2900,
-        "available": true
-      },
-
-      
-
-      {
-        "id": 11,
-        "image": "/kawasaki/kx_250_2022.jpg",
-        "company": "kawasaki",
-        "model": "kx",
-        "cc": 250,
-        "year": 2022,
-        "price": 3100,
-        "available": true
-      },
-      {
-        "id": 12,
-        "image": "/kawasaki/ninja_400_2014.jpg",
-        "company": "kawasaki",
-        "model": "ninja",
-        "cc": 400,
-        "year": 2014,
-        "price": 3100,
-        "available": true
-      },
-      {
-        "id": 13,
-        "image": "/kawasaki/Versys_650_2012.jpg",
-        "company": "kawasaki",
-        "model": "Versys",
-        "cc": 650,
-        "year": 2012,
-        "price": 3100,
-        "available": false
-      }
+      "id": 8,
+      "image": "/yamaha/fz6r_600_2010.jpg",
+      "company": "Yamaha",
+      "model": "fz6r",
+      "cc": 600,
+      "year": 2010,
+      "price": 2200,
+      "available": false
+    },
+    {
+      "id": 9,
+      "image": "/yamaha/wrf_250_2004.jpg",
+      "company": "Yamaha",
+      "model": "wr250f",
+      "cc": 250,
+      "year": 2004,
+      "price": 2700,
+      "available": true
+    },
+    {
+      "id": 10,
+      "image": "/yamaha/wrf_400_2003.jpg",
+      "company": "Yamaha",
+      "model": "wr400f",
+      "cc": 400,
+      "year": 2003,
+      "price": 2900,
+      "available": true
+    },
+    {
+      "id": 11,
+      "image": "/kawasaki/kx_250_2022.jpg",
+      "company": "Kawasaki",
+      "model": "kx",
+      "cc": 250,
+      "year": 2022,
+      "price": 3100,
+      "available": true
+    },
+    {
+      "id": 12,
+      "image": "/kawasaki/ninja_400_2014.jpg",
+      "company": "Kawasaki",
+      "model": "ninja",
+      "cc": 400,
+      "year": 2014,
+      "price": 3100,
+      "available": true
+    },
+    {
+      "id": 13,
+      "image": "/kawasaki/Versys_650_2012.jpg",
+      "company": "Kawasaki",
+      "model": "Versys",
+      "cc": 650,
+      "year": 2012,
+      "price": 3100,
+      "available": false
+    }
   ]
 }

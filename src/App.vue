@@ -6,12 +6,10 @@
                   <search-block></search-block>
                   <!-- <post-form></post-form> -->
                   <div>
-                        <p>Выбрано мотоциклов: {{ postsCount }}</p>
-                        <p>Переменная - {{ vxVar }}</p>
-                        <button>Очистить</button>
+                        <p>Выбрано мотоциклов: {{ posts__count }}</p>
                   </div>
                   <div class="mainBlock">
-                        <div class="blocks" v-for="item in posts" :key="item">
+                        <div class="blocks" v-for="item in filtered__Posts" :key="item">
                               <h4 class="txtNameBike">
                                     <!-- {{ item.id }} -->
                                     {{ item.company }}
@@ -27,7 +25,7 @@
                         <hr />
                   </div>
             </main>
-            <footer-block :testProps="testProps" @my-emit-func="testPropsUpdate"></footer-block>
+            <footer-block></footer-block>
       </div>
 </template>
 
@@ -35,20 +33,9 @@
 import headerBlock from "@/components/header-block.vue";
 import SearchBlock from "@/components/search-block.vue";
 import FooterBlock from "@/components/footer-block.vue";
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-      data() {
-            return {
-                  testProps: 10,
-                  counter: 0,
-            };
-      },
-      provide() {
-            return {
-                  countProvide: this.counter,
-            };
-      },
       components: {
             "header-block": headerBlock,
             "search-block": SearchBlock,
@@ -57,20 +44,21 @@ export default {
       },
       name: "App",
       methods: {
-            testPropsUpdate(data) {
-                  this.testProps = this.testProps + 2;
-                  console.log(data);
-            },
-            ...mapActions({
-                  fetchPosts: "fetchPosts",
-            }),
+            // ...mapActions({
+            //       fetchPosts: "fetchPosts",
+            // }),
+            ...mapActions("posts", ["fetchPosts"]),
       },
       computed: {
-            ...mapState(["vxVar"]),
-            ...mapGetters({
-                  posts: "allPosts",
-                  postsCount: "postsCount",
-            }),
+            // ...mapState({ vxVar: (state) => state.allData.vxVar }),
+            // ...mapState("posts", ["vxVar"]),
+
+            // ...mapGetters({
+            //       posts: "allPosts",
+            //       postsCount: "postsCount",
+            // }),
+
+            ...mapGetters("posts", ["all__posts", "posts__count", "filtered__Posts"]),
       },
       async mounted() {
             this.fetchPosts();

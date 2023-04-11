@@ -1,32 +1,9 @@
 <template>
-      <footer class="footer">
-            <button @click="myEmit">Обновить пропс</button>
-            {{ (countProvide += 10) }}
-            {{ testProps }}
-      </footer>
+      <footer class="footer"></footer>
 </template>
 
 <script>
-export default {
-      emits: ["my-emit-func"],
-      props: {
-            testProps: {
-                  type: Number,
-                  required: true,
-            },
-      },
-      inject: ["countProvide"],
-      // emits: ["my-emit-func"],
-      //Валидатор
-      // emits: {
-      //         "my-emit-func": null,
-      // },
-      methods: {
-            myEmit() {
-                  this.$emit("my-emit-func", 32);
-            },
-      },
-};
+export default {};
 </script>
 
 <style scoped>

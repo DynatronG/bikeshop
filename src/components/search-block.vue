@@ -6,14 +6,16 @@
             <button @click="switchSearchBlock('sm_price')">Цена</button>
             <button @click="switchSearchBlock('sm_addition')">Дополнительно</button>
       </div>
-
       <!---------- БЛОК  КОМПАНИИ---------->
-      <div class="block-search-child" v-if="searchParams == 'sm_models'">
+      <div class="block-search-child" v-if="isStartSearch == 'sm_models'">
             <div
                   class="block-company-logo"
-                  v-for="item in compImg"
+                  v-for="item in company"
                   :key="item"
-                  @click="this.currentDataSelected['currentCompany'] = item.name"
+                  @click="
+                        filterSelection(item.name);
+                        filterPosts(['company', item.name]);
+                  "
             >
                   <img class="imgCompany" :src="require(`@/assets/img/logo${item.image}`)" />
                   <!-- {{ currentCompany }} -->
@@ -21,18 +23,24 @@
       </div>
 
       <!----------БЛОК ГОД---------->
-      <div class="block-search-child" v-if="searchParams == 'sm_year'">
+      <div class="block-search-child" v-if="isStartSearch == 'sm_year'">
             <h4>Год выпуска</h4>
             <h5>от</h5>
-            <select v-model="currentDataSelected['currentDateManufactureMin']">
-                  <option selected></option>
+            <select
+                  v-model="currentDataSelected['currentDateManufactureMin']"
+                  @change="isActivateDate = true"
+            >
+                  <!-- <option selected value="1">1960</option> -->
                   <option v-for="item in dateManufacture" :key="item">
                         {{ item }}
                   </option>
             </select>
             <h5>до</h5>
-            <select v-model="currentDataSelected['currentDateManufactureMax']">
-                  <option selected></option>
+            <select
+                  v-model="currentDataSelected['currentDateManufactureMax']"
+                  @change="isActivateDate = true"
+            >
+                  <!-- <option selected></option> -->
                   <option v-for="item in dateManufacture" :key="item">
                         {{ item }}
                   </option>
@@ -40,7 +48,7 @@
       </div>
 
       <!----------БЛОК КЛАСС МОТО---------->
-      <div class="block-search-child" v-if="searchParams == 'sm_cc'">
+      <div class="block-search-child" v-if="isStartSearch == 'sm_cc'">
             <h4>Класс мотоцикла</h4>
             <ul class="ulClassMoto">
                   <li
@@ -55,32 +63,8 @@
       </div>
 
       <!----------БЛОК ЦЕНА---------->
-      <div class="block-search-child" v-if="searchParams == 'sm_price'">
+      <div class="block-search-child" v-if="isStartSearch == 'sm_price'">
             <div class="block-price">
-                  мин {{ price.min }} макс {{ price.max }}
-                  <div class="range-input">
-                        <div class="progressbar">
-                              <div class="progressbarLine"></div>
-                        </div>
-                        <input
-                              class="range-price"
-                              type="range"
-                              min="0"
-                              max="5000"
-                              v-model="price.min"
-                              step="10"
-                              @change="updateProgressbarPosition"
-                        />
-                        <input
-                              class="range-price"
-                              type="range"
-                              min="0"
-                              max="5000"
-                              v-model="price.max"
-                              step="10"
-                              @change="updateProgressbarPosition"
-                        />
-                  </div>
                   <h5>мин</h5>
                   <input
                         class="input-data"
@@ -98,121 +82,122 @@
                   <h5>руб.</h5>
             </div>
       </div>
-      <div class="block-search-child" v-if="searchParams == 'sm_addition'">
-            <h5>Дополнительный блок с данными для поиска</h5>
+      <!----------ДОПОЛНИТЕЛЬНЫЙ БЛОК---------->
+      <div class="block-search-child" v-if="isStartSearch == 'sm_addition'">
+            <h4>Дополнительный блок с данными для поиска</h4>
+
+            <label class="b-contain">
+                  <span>В наличии</span><input type="checkbox" />
+                  <div class="b-input"></div
+            ></label>
+
+            <label class="b-contain"
+                  ><span>С пробегом</span><input type="checkbox" />
+                  <div class="b-input"></div
+            ></label>
+
+            <label class="b-contain"
+                  ><span>Без пробега</span><input type="checkbox" />
+                  <div class="b-input"></div
+            ></label>
       </div>
 
       <!----------МОДАЛЬНЫЕ ОКНА---------->
 
       <!-- компания -->
       <div class="block-modal">
-            <div class="modal-search-window" v-if="currentDataSelected.currentCompany !== ''">
-                  <h5 class="h5-modal">{{ currentDataSelected["currentCompany"] }}</h5>
-                  <div class="div-delete" @click="currentDataSelected.currentCompany = ''"></div>
-            </div>
+            <Transition name="modalWindow">
+                  <div class="modal-search-window" v-if="currentDataSelected.currentCompany !== ''">
+                        <h5 class="h5-modal">{{ currentDataSelected["currentCompany"] }}</h5>
+                        <div
+                              class="div-delete"
+                              @click="currentDataSelected.currentCompany = ''"
+                        ></div>
+                  </div>
+            </Transition>
 
-            <!-- Дата минимум -->
-            <div
-                  class="modal-search-window"
-                  v-if="currentDataSelected.currentDateManufactureMin !== ''"
-            >
-                  <h5 class="h5-modal">{{ currentDataSelected["currentDateManufactureMin"] }}</h5>
-                  <div
-                        class="div-delete"
-                        @click="currentDataSelected.currentDateManufactureMin = ''"
-                  ></div>
-            </div>
-            <!-- Дата максимум -->
-            <div
-                  class="modal-search-window"
-                  v-if="currentDataSelected.currentDateManufactureMax !== ''"
-            >
-                  <h5 class="h5-modal">{{ currentDataSelected["currentDateManufactureMax"] }}</h5>
-                  <div
-                        class="div-delete"
-                        @click="currentDataSelected.currentDateManufactureMax = ''"
-                  ></div>
-            </div>
+            <!-- Дата -->
+            <Transition name="modalWindow">
+                  <div class="modal-search-window" v-if="isActivateDate">
+                        <h5 class="h5-modal">
+                              от {{ currentDataSelected["currentDateManufactureMin"] }} до
+                              {{ currentDataSelected["currentDateManufactureMax"] }}
+                        </h5>
+                        <div class="div-delete" @click="dateClear"></div>
+                  </div>
+            </Transition>
+
             <!-- Класс мотоцикла -->
-            <div class="modal-search-window" v-if="currentDataSelected.currentmotoClass !== ''">
-                  <h5 class="h5-modal">{{ currentDataSelected["currentmotoClass"] }}</h5>
-                  <div class="div-delete" @click="currentDataSelected.currentmotoClass = ''"></div>
-            </div>
-            <!-- Минимальная цена -->
-            <div class="modal-search-window" v-if="isActivateDate === true">
-                  <h5 class="h5-modal">от {{ price.min }} до {{ price.max }}</h5>
-                  <div class="div-delete" @click="isActivateDate = false"></div>
-            </div>
+            <Transition name="modalWindow">
+                  <div
+                        class="modal-search-window"
+                        v-if="currentDataSelected.currentmotoClass !== ''"
+                  >
+                        <h5 class="h5-modal">{{ currentDataSelected["currentmotoClass"] }}</h5>
+                        <div
+                              class="div-delete"
+                              @click="currentDataSelected.currentmotoClass = ''"
+                        ></div>
+                  </div>
+            </Transition>
+
+            <!-- ЦЕНА -->
+            <Transition name="modalWindow">
+                  <div class="modal-search-window" v-if="isActivatePrice === true">
+                        <h5 class="h5-modal">от {{ price.min }} до {{ price.max }}</h5>
+                        <div class="div-delete" @click="isActivatePrice = false"></div>
+                  </div>
+            </Transition>
       </div>
 </template>
 
 //----------------------------------SCRIPT-------------------------------------------
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
       data() {
             return {
-                  currentDataSelected: {
-                        currentCompany: "",
-                        currentDateManufactureMin: "",
-                        currentDateManufactureMax: "",
-                        currentmotoClass: "",
-                  },
+                  isActivatePrice: false,
                   isActivateDate: false,
-
-                  company: ["Honda", "Suzuky", "Yamaha", "Kawasaki"],
-                  compImg: [
-                        { name: "Honda", image: "/honda.png" },
-                        { name: "Suzuki", image: "/suzuki.png" },
-                        { name: "Yamaha", image: "/yamaha.png" },
-                        { name: "Kawasaki", image: "/kawasaki.png" },
-                  ],
-                  model: {
-                        Honda: ["cb", "cb-r"],
-                        Suzuki: ["dr", "dr-z"],
-                        Yamaha: ["yzf-r1", "yz", "xt", "fz6r", "wrf", "wrf"],
-                        Kawasaki: ["zx", "klr", "klx", "kx", "ninja", "Versys"],
-                  },
-                  dateManufacture: [
-                        1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971,
-                        1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983,
-                        1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995,
-                        1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-                        2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
-                        2020, 2021, 2022, 2023,
-                  ],
-                  motoClass: [
-                        "Классический",
-                        "Турист",
-                        "Спорт",
-                        "Эндуро",
-                        "Кроссовый",
-                        "Мотард",
-                        "Трицикл",
-                  ],
-                  price: { min: 0, max: 5000 },
-                  searchParams: "1",
-                  progressbarPosition: { min: 0, max: "100%" },
+                  isStartSearch: "",
             };
       },
 
       // -------------------METHODS-------------------
       methods: {
+            filterSelection(value) {
+                  this.currentDataSelected.currentCompany = value;
+            },
+            dateClear() {
+                  this.isActivateDate = false;
+                  this.currentDataSelected.currentDateManufactureMin = "";
+                  this.currentDataSelected.currentDateManufactureMax = "";
+            },
             switchSearchBlock(val) {
-                  this.searchParams = val;
+                  this.isStartSearch = val;
             },
 
             updateProgressbarPosition() {
-                  let max = (this.price.max * 100) / 5000 - (this.price.min * 100) / 5000;
-                  let min = (this.price.min * 100) / 5000;
                   if (this.price.min > this.price.max) {
-                        this.price.min = this.price.max - 100;
-                        this.progressbarPosition.max = max + "%";
-                        this.progressbarPosition.min = min + "%";
+                        this.price.min = this.price.max;
+
+                        console.log("min - " + this.price.min + "max - " + this.price.max);
                   }
-                  this.progressbarPosition.min = min + "%";
-                  this.progressbarPosition.max = max + "%";
-                  this.isActivateDate = true;
+
+                  this.isActivatePrice = true;
             },
+            ...mapActions("posts", ["fetchPosts", "filterPosts"]),
+      },
+      computed: {
+            // ...mapState({ company: (state) => state.posts.company }),
+            ...mapState("posts", [
+                  "company",
+                  // "model",
+                  "dateManufacture",
+                  "motoClass",
+                  "price",
+                  "currentDataSelected",
+            ]),
       },
 };
 </script>
@@ -287,6 +272,15 @@ export default {
 .h5-modal {
       color: inherit;
 }
+.modalWindow-enter-active,
+.modalWindow-leave-active {
+      transition: all 1s ease;
+}
+.modalWindow-enter-from,
+.modalWindow-leave-to {
+      opacity: 0;
+      transform: translateX(40px);
+}
 /*-----------------------СПИСОК КЛАСС МОТОЦИКЛОВ ------------------------*/
 .ulClassMoto {
       background-color: #403d39;
@@ -341,86 +335,7 @@ export default {
       transform: translate(0, 0px);
       cursor: pointer;
 }
-/*-----------------------СЛАЙДЕР ------------------------*/
-/* блок слайдера */
-.range-input {
-      width: 100%;
-      height: 30px;
-      padding: 20px;
-      position: relative;
-}
-/* полоса слайдера */
-.range-price {
-      appearance: none;
-      background-color: transparent;
-      cursor: pointer;
-      width: 100%;
-      border-radius: 8px;
-      border: 0px;
-      height: 30px;
-      margin: 0px;
-      padding: 0px;
-      position: absolute;
-      left: 0px;
-      pointer-events: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-}
-/* ползунок для хрома */
-.range-price::-webkit-slider-thumb {
-      box-shadow: 3px 3px 3px #353535;
-      border: 1px solid #353535;
-      height: 25px;
-      width: 15px;
-      border-radius: 20%;
-      background: #ffffff;
-      cursor: pointer;
-      -webkit-appearance: none;
-      pointer-events: auto;
-}
-/* ползунок для файрфокса */
-.range-price::-moz-range-thumb {
-      box-shadow: 3px 3px 3px #353535;
-      border: 1px solid #353535;
-      height: 25px;
-      width: 15px;
-      border-radius: 20%;
-      background: #ffffff;
-      cursor: pointer;
-      -moz-appearance: none;
-      /* margin-top: -1px; */
-      pointer-events: auto;
-}
-/* прогресс бар */
-.progressbar {
-      background-color: #fffcf2;
-      appearance: none;
-      width: 100%;
-      border-radius: 8px;
-      height: 30px;
-      margin: 0px;
-      padding: 0px;
-      position: absolute;
-      left: 0px;
-      pointer-events: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-}
-/* полоса прогресс бара */
-.progressbarLine {
-      background-color: #eb5e28;
-      appearance: none;
-      width: v-bind("progressbarPosition.max");
-      border-radius: 8px;
-      height: 30px;
-      margin: 0px;
-      padding: 0px;
-      position: absolute;
-      left: v-bind("progressbarPosition.min");
-      pointer-events: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-}
+
 /*-------------------- INPUT--------------------*/
 
 /* убрать спинеры на на инпут для хрома */
@@ -429,10 +344,8 @@ export default {
       -webkit-appearance: none;
 }
 
-input,
-select ::-webkit-outer-spin-button,
-input,
-select::-webkit-inner-spin-button {
+input select ::-webkit-outer-spin-button,
+input select::-webkit-inner-spin-button {
       -webkit-appearance: none;
 }
 /* убрать спинеры на инпут для файрфокса */
@@ -457,6 +370,92 @@ select::-webkit-inner-spin-button {
       background-color: #fffcf2;
 }
 
+/*-------------------- CHEKBOX--------------------*/
+.b-contain *,
+.b-contain *::before,
+.b-contain *::after {
+      box-sizing: content-box;
+}
+
+.b-contain input {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+}
+
+.b-contain span {
+      line-height: 1.5;
+      font-size: 1rem;
+      font-family: inherit;
+}
+
+.b-contain {
+      display: table;
+      position: relative;
+      padding: 0rem 2rem 0rem 2rem;
+      cursor: pointer;
+      /* margin-bottom: 0.4rem; */
+}
+
+.b-contain input[type="checkbox"] ~ .b-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 1.25rem;
+      width: 1.25rem;
+      background: #fffcf2;
+      transition: background 250ms;
+      border: 1px solid #403d39;
+      border-radius: 0.2rem;
+}
+
+.b-contain input[type="checkbox"] ~ .b-input::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 7px;
+      top: 3px;
+      width: 0.3rem;
+      height: 0.6rem;
+      border: solid #ccc5b9;
+      border-width: 0 2px 2px 0;
+      transition: background 250ms;
+      transform: rotate(45deg);
+}
+
+.b-contain input[type="checkbox"]:disabled ~ .b-input::after {
+      border-color: #ccc5b9;
+}
+
+.b-contain input:checked ~ .b-input::after {
+      display: block;
+}
+
+.b-contain:hover input[type="checkbox"]:not([disabled]) ~ .b-input,
+.b-contain input[type="checkbox"]:focus ~ .b-input {
+      background: #fffcf2;
+      border-color: #403d39;
+}
+
+.b-contain input:focus ~ .b-input {
+      box-shadow: 0 0 0 2px #fffcf2;
+}
+
+.b-contain input[type="checkbox"]:checked ~ .b-input {
+      background: #403d39;
+      border-color: #403d39;
+}
+
+.b-contain input[type="checkbox"]:disabled ~ .b-input {
+      opacity: 0.57;
+      cursor: not-allowed;
+}
+
+.b-contain:hover input[type="checkbox"]:not([disabled]):checked ~ .b-input,
+.b-contain input[type="checkbox"]:checked:focus ~ .b-input {
+      background: #403d39;
+      border-color: #403d39;
+}
 /* -----------------------IMG----------------------------- */
 .imgCompany {
       cursor: pointer;
