@@ -13,7 +13,7 @@
                   v-for="item in company"
                   :key="item"
                   @click="
-                        filterSelection(item.name);
+                        addDataSelected('currentCompany', item.name);
                         filterPosts(['company', item.name]);
                   "
             >
@@ -27,8 +27,9 @@
             <h4>Год выпуска</h4>
             <h5>от</h5>
             <select
-                  v-model="currentDataSelected['currentDateManufactureMin']"
-                  @change="isActivateDate = true"
+                  @change="
+                        addDataSelected('currentDateManufactureMin', Number($event.target.value))
+                  "
             >
                   <!-- <option selected value="1">1960</option> -->
                   <option v-for="item in dateManufacture" :key="item">
@@ -37,8 +38,9 @@
             </select>
             <h5>до</h5>
             <select
-                  v-model="currentDataSelected['currentDateManufactureMax']"
-                  @change="isActivateDate = true"
+                  @change="
+                        addDataSelected('currentDateManufactureMax', Number($event.target.value))
+                  "
             >
                   <!-- <option selected></option> -->
                   <option v-for="item in dateManufacture" :key="item">
@@ -55,7 +57,7 @@
                         class="liClassMoto"
                         v-for="item in motoClass"
                         :key="item"
-                        @click="this.currentDataSelected['currentmotoClass'] = item"
+                        @click="addDataSelected('currentmotoClass', item)"
                   >
                         {{ item }}
                   </li>
@@ -69,15 +71,13 @@
                   <input
                         class="input-data"
                         type="number"
-                        v-model="price.min"
-                        @change="updateProgressbarPosition"
+                        @change="addDataSelected('priceMin', Number($event.target.value))"
                   />
                   <h5>макс</h5>
                   <input
                         class="input-data"
                         type="number"
-                        v-model="price.max"
-                        @change="updateProgressbarPosition"
+                        @change="addDataSelected('priceMax', Number($event.target.value))"
                   />
                   <h5>руб.</h5>
             </div>
@@ -107,45 +107,62 @@
       <!-- компания -->
       <div class="block-modal">
             <Transition name="modalWindow">
-                  <div class="modal-search-window" v-if="currentDataSelected.currentCompany !== ''">
+                  <div class="modal-search-window" v-if="currentDataSelected.currentCompany">
                         <h5 class="h5-modal">{{ currentDataSelected["currentCompany"] }}</h5>
-                        <div
-                              class="div-delete"
-                              @click="currentDataSelected.currentCompany = ''"
-                        ></div>
+                        <div class="div-delete" @click="delDataSelected(['currentCompany'])"></div>
                   </div>
             </Transition>
 
-            <!-- Дата -->
+            <!-- Год -->
             <Transition name="modalWindow">
-                  <div class="modal-search-window" v-if="isActivateDate">
+                  <div
+                        class="modal-search-window"
+                        v-if="
+                              currentDataSelected.currentDateManufactureMin ||
+                              currentDataSelected.currentDateManufactureMax
+                        "
+                  >
                         <h5 class="h5-modal">
                               от {{ currentDataSelected["currentDateManufactureMin"] }} до
                               {{ currentDataSelected["currentDateManufactureMax"] }}
                         </h5>
-                        <div class="div-delete" @click="dateClear"></div>
+                        <div
+                              class="div-delete"
+                              @click="
+                                    delDataSelected([
+                                          'currentDateManufactureMin',
+                                          'currentDateManufactureMax',
+                                    ])
+                              "
+                        ></div>
                   </div>
             </Transition>
 
             <!-- Класс мотоцикла -->
             <Transition name="modalWindow">
-                  <div
-                        class="modal-search-window"
-                        v-if="currentDataSelected.currentmotoClass !== ''"
-                  >
+                  <div class="modal-search-window" v-if="currentDataSelected.currentmotoClass">
                         <h5 class="h5-modal">{{ currentDataSelected["currentmotoClass"] }}</h5>
                         <div
                               class="div-delete"
-                              @click="currentDataSelected.currentmotoClass = ''"
+                              @click="delDataSelected(['currentmotoClass'])"
                         ></div>
                   </div>
             </Transition>
 
             <!-- ЦЕНА -->
             <Transition name="modalWindow">
-                  <div class="modal-search-window" v-if="isActivatePrice === true">
-                        <h5 class="h5-modal">от {{ price.min }} до {{ price.max }}</h5>
-                        <div class="div-delete" @click="isActivatePrice = false"></div>
+                  <div
+                        class="modal-search-window"
+                        v-if="currentDataSelected.priceMin || currentDataSelected.priceMax"
+                  >
+                        <h5 class="h5-modal">
+                              от {{ currentDataSelected.priceMin }} до
+                              {{ currentDataSelected.priceMax }}
+                        </h5>
+                        <div
+                              class="div-delete"
+                              @click="delDataSelected(['priceMin', 'priceMax'])"
+                        ></div>
                   </div>
             </Transition>
       </div>
@@ -165,27 +182,27 @@ export default {
 
       // -------------------METHODS-------------------
       methods: {
-            filterSelection(value) {
-                  this.currentDataSelected.currentCompany = value;
+            addDataSelected(valueName, value) {
+                  this.currentDataSelected[valueName] = value;
+                  console.table(this.currentDataSelected);
+                  // console.log(typeof value);
+            },
+            // delDataSelected(valueName) {
+            //       delete this.currentDataSelected[valueName];
+            // },
+            delDataSelected(valueName) {
+                  console.log(valueName);
+                  valueName.forEach((item) => delete this.currentDataSelected[item]);
             },
             dateClear() {
                   this.isActivateDate = false;
-                  this.currentDataSelected.currentDateManufactureMin = "";
-                  this.currentDataSelected.currentDateManufactureMax = "";
+                  delete this.currentDataSelected.currentDateManufactureMin;
+                  delete this.currentDataSelected.currentDateManufactureMax;
             },
             switchSearchBlock(val) {
                   this.isStartSearch = val;
             },
 
-            updateProgressbarPosition() {
-                  if (this.price.min > this.price.max) {
-                        this.price.min = this.price.max;
-
-                        console.log("min - " + this.price.min + "max - " + this.price.max);
-                  }
-
-                  this.isActivatePrice = true;
-            },
             ...mapActions("posts", ["fetchPosts", "filterPosts"]),
       },
       computed: {

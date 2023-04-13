@@ -31,13 +31,15 @@ export const posts = {
                   "Мотард",
                   "Трицикл",
             ],
-            price: { min: 0, max: 5000 },
-            currentDataSelected: {
-                  currentCompany: "",
-                  currentDateManufactureMin: "",
-                  currentDateManufactureMax: "",
-                  currentmotoClass: "",
-            },
+
+            // currentDataSelected: {
+            //       currentCompany: "",
+            //       currentDateManufactureMin: "",
+            //       currentDateManufactureMax: "",
+            //       currentmotoClass: "",
+            // },
+            price: { min: 0, max: 0 },
+            currentDataSelected: {},
       },
       // =================================================================
       actions: {
@@ -72,7 +74,7 @@ export const posts = {
                         return el[val[0]] === val[1];
                   });
                   // console.log(state.filteredPosts);
-                  console.log(val);
+                  // console.log(val);
             },
       },
 

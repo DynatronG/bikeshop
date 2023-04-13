@@ -11,7 +11,6 @@
                   <div class="mainBlock">
                         <div class="blocks" v-for="item in filtered__Posts" :key="item">
                               <h4 class="txtNameBike">
-                                    <!-- {{ item.id }} -->
                                     {{ item.company }}
                                     {{ item.model }} {{ item.cc }}
                               </h4>
@@ -40,7 +39,6 @@ export default {
             "header-block": headerBlock,
             "search-block": SearchBlock,
             "footer-block": FooterBlock,
-            // PostForm,
       },
       name: "App",
       methods: {
