@@ -37,8 +37,9 @@ export const posts = {
             //       currentDateManufactureMin: "",
             //       currentDateManufactureMax: "",
             //       currentmotoClass: "",
+            //       priceMin:"",
+            //       priceMax:"",
             // },
-            price: { min: 0, max: 0 },
             currentDataSelected: {},
       },
       // =================================================================
@@ -58,8 +59,8 @@ export const posts = {
             //       context.commit("FILTER_POSTS", filterPosts);
             // },
 
-            filterPosts(context, val) {
-                  context.commit("FILTER_POSTS", val);
+            filterPosts(context) {
+                  context.commit("FILTER_POSTS");
                   // console.log(val[1]);
             },
       },
@@ -69,12 +70,23 @@ export const posts = {
                   state.dataPosts = posts;
                   state.filteredPosts = posts;
             },
-            FILTER_POSTS(state, val) {
+            // FILTER_POSTS(state, val) {
+            //       state.filteredPosts = state.dataPosts.filter(function (el) {
+            //             return el[val[0]] === val[1];
+            //       });
+
+            FILTER_POSTS(state) {
+                  let valueName = "company";
+                  let value = state.currentDataSelected.currentCompany;
                   state.filteredPosts = state.dataPosts.filter(function (el) {
-                        return el[val[0]] === val[1];
+                        return el[valueName] === value;
+                        // return console.log(el);
                   });
-                  // console.log(state.filteredPosts);
-                  // console.log(val);
+                  // console.log(
+                  //       "valueName - " + valueName,
+                  //       "value - " + value,
+                  //       "filteredPosts - " + state.filteredPosts
+                  // );
             },
       },
 

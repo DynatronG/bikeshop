@@ -7,15 +7,12 @@
             <button @click="switchSearchBlock('sm_addition')">Дополнительно</button>
       </div>
       <!---------- БЛОК  КОМПАНИИ---------->
-      <div class="block-search-child" v-if="isStartSearch == 'sm_models'">
+      <div class="block-search-child" v-if="navBlock == 'sm_models'">
             <div
                   class="block-company-logo"
                   v-for="item in company"
                   :key="item"
-                  @click="
-                        addDataSelected('currentCompany', item.name);
-                        filterPosts(['company', item.name]);
-                  "
+                  @click="addDataSelected('currentCompany', item.name)"
             >
                   <img class="imgCompany" :src="require(`@/assets/img/logo${item.image}`)" />
                   <!-- {{ currentCompany }} -->
@@ -23,7 +20,7 @@
       </div>
 
       <!----------БЛОК ГОД---------->
-      <div class="block-search-child" v-if="isStartSearch == 'sm_year'">
+      <div class="block-search-child" v-if="navBlock == 'sm_year'">
             <h4>Год выпуска</h4>
             <h5>от</h5>
             <select
@@ -50,7 +47,7 @@
       </div>
 
       <!----------БЛОК КЛАСС МОТО---------->
-      <div class="block-search-child" v-if="isStartSearch == 'sm_cc'">
+      <div class="block-search-child" v-if="navBlock == 'sm_cc'">
             <h4>Класс мотоцикла</h4>
             <ul class="ulClassMoto">
                   <li
@@ -65,7 +62,7 @@
       </div>
 
       <!----------БЛОК ЦЕНА---------->
-      <div class="block-search-child" v-if="isStartSearch == 'sm_price'">
+      <div class="block-search-child" v-if="navBlock == 'sm_price'">
             <div class="block-price">
                   <h5>мин</h5>
                   <input
@@ -83,7 +80,7 @@
             </div>
       </div>
       <!----------ДОПОЛНИТЕЛЬНЫЙ БЛОК---------->
-      <div class="block-search-child" v-if="isStartSearch == 'sm_addition'">
+      <div class="block-search-child" v-if="navBlock == 'sm_addition'">
             <h4>Дополнительный блок с данными для поиска</h4>
 
             <label class="b-contain">
@@ -174,9 +171,7 @@ import { mapState, mapActions } from "vuex";
 export default {
       data() {
             return {
-                  isActivatePrice: false,
-                  isActivateDate: false,
-                  isStartSearch: "",
+                  navBlock: "",
             };
       },
 
@@ -184,23 +179,15 @@ export default {
       methods: {
             addDataSelected(valueName, value) {
                   this.currentDataSelected[valueName] = value;
-                  console.table(this.currentDataSelected);
-                  // console.log(typeof value);
+                  this.filterPosts();
             },
-            // delDataSelected(valueName) {
-            //       delete this.currentDataSelected[valueName];
-            // },
+
             delDataSelected(valueName) {
-                  console.log(valueName);
                   valueName.forEach((item) => delete this.currentDataSelected[item]);
-            },
-            dateClear() {
-                  this.isActivateDate = false;
-                  delete this.currentDataSelected.currentDateManufactureMin;
-                  delete this.currentDataSelected.currentDateManufactureMax;
+                  this.filterPosts();
             },
             switchSearchBlock(val) {
-                  this.isStartSearch = val;
+                  this.navBlock = val;
             },
 
             ...mapActions("posts", ["fetchPosts", "filterPosts"]),
