@@ -3,20 +3,48 @@
       <div class="wrapper">
             <header-block></header-block>
             <main>
-                  <search-block></search-block>
+                  <search-block v-if="!isShowBike"></search-block>
                   <!-- <post-form></post-form> -->
                   <div>
                         <p>Выбрано мотоциклов: {{ posts__count }}</p>
                   </div>
-                  <div class="mainBlock">
-                        <div class="blocks" v-for="item in filtered__Posts" :key="item">
+
+                  <div class="mainBlock" v-if="!isShowBike">
+                        <div
+                              class="blocks"
+                              v-for="(item, id) in filtered__Posts"
+                              :key="id"
+                              @click="showBike(item.id)"
+                        >
                               <h4 class="txtNameBike">
                                     {{ item.company }}
-                                    {{ item.model }} {{ item.cc }}
+                                    {{ item.model }} {{ item.cc }} {{ item.id }}
                               </h4>
                               <img
                                     class="img_blocks"
                                     :src="require(`@/assets/img/moto${item.image}`)"
+                              />
+                        </div>
+                  </div>
+
+                  <div class="block-bike-wrapper" v-if="isShowBike">
+                        <div>
+                              <button @click="isShowBike = false">Назад</button>
+                        </div>
+                        <div class="block-bike">
+                              <div class="block-bike-wrapper">
+                                    <h4 class="bikeTxt">Производитель: {{ bike[0].company }}</h4>
+                                    <h4 class="bikeTxt">Модель: {{ bike[0].model }}</h4>
+                                    <h4 class="bikeTxt">Год выпуска: {{ bike[0].year }}</h4>
+                                    <h4 class="bikeTxt">Мощность двигателя: {{ bike[0].year }}</h4>
+                                    <h4 class="bikeTxt">Класс мотоцикла: {{ bike[0].klass }}</h4>
+                                    <h4 class="bikeTxt">Цена: {{ bike[0].price }}</h4>
+                                    <h4 class="bikeTxt">В наличии: {{ bike[0].available }}</h4>
+                                    <h4 class="bikeTxt">Описание: {{ bike[0].description }}</h4>
+                              </div>
+                              <img
+                                    class="img-bike"
+                                    :src="require(`@/assets/img/moto${bike[0].image}`)"
                               />
                         </div>
                   </div>
@@ -35,13 +63,28 @@ import FooterBlock from "@/components/footer-block.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+      name: "App",
       components: {
             "header-block": headerBlock,
             "search-block": SearchBlock,
             "footer-block": FooterBlock,
       },
-      name: "App",
+      data() {
+            return {
+                  isShowBike: false,
+                  bike: null,
+            };
+      },
       methods: {
+            showBike(id) {
+                  console.log(id);
+                  this.isShowBike = true;
+                  this.bike = this.filtered__Posts.filter((el) => {
+                        return el.id === id;
+                  });
+                  // this.bike = this.bike[0];
+                  console.log(this.bike);
+            },
             // ...mapActions({
             //       fetchPosts: "fetchPosts",
             // }),

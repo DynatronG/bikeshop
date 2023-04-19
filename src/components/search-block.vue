@@ -3,7 +3,6 @@
             <button @click="switchSearchBlock('sm_models')">Модель</button>
             <button @click="switchSearchBlock('sm_year')">Год</button>
             <button @click="switchSearchBlock('sm_cc')">Класс мотоцикла</button>
-            <button @click="switchSearchBlock('sm_price')">Цена</button>
             <button @click="switchSearchBlock('sm_addition')">Дополнительно</button>
       </div>
       <!---------- БЛОК  КОМПАНИИ---------->
@@ -12,34 +11,17 @@
                   class="block-company-logo"
                   v-for="item in company"
                   :key="item"
-                  @click="addDataSelected('currentCompany', item.name)"
+                  @click="addDataSelected('company', item.name)"
             >
                   <img class="imgCompany" :src="require(`@/assets/img/logo${item.image}`)" />
-                  <!-- {{ currentCompany }} -->
             </div>
       </div>
 
       <!----------БЛОК ГОД---------->
       <div class="block-search-child" v-if="navBlock == 'sm_year'">
             <h4>Год выпуска</h4>
-            <h5>от</h5>
-            <select
-                  @change="
-                        addDataSelected('currentDateManufactureMin', Number($event.target.value))
-                  "
-            >
+            <select @change="addDataSelected('year', Number($event.target.value))">
                   <!-- <option selected value="1">1960</option> -->
-                  <option v-for="item in dateManufacture" :key="item">
-                        {{ item }}
-                  </option>
-            </select>
-            <h5>до</h5>
-            <select
-                  @change="
-                        addDataSelected('currentDateManufactureMax', Number($event.target.value))
-                  "
-            >
-                  <!-- <option selected></option> -->
                   <option v-for="item in dateManufacture" :key="item">
                         {{ item }}
                   </option>
@@ -54,31 +36,13 @@
                         class="liClassMoto"
                         v-for="item in motoClass"
                         :key="item"
-                        @click="addDataSelected('currentmotoClass', item)"
+                        @click="addDataSelected('klass', item)"
                   >
                         {{ item }}
                   </li>
             </ul>
       </div>
 
-      <!----------БЛОК ЦЕНА---------->
-      <div class="block-search-child" v-if="navBlock == 'sm_price'">
-            <div class="block-price">
-                  <h5>мин</h5>
-                  <input
-                        class="input-data"
-                        type="number"
-                        @change="addDataSelected('priceMin', Number($event.target.value))"
-                  />
-                  <h5>макс</h5>
-                  <input
-                        class="input-data"
-                        type="number"
-                        @change="addDataSelected('priceMax', Number($event.target.value))"
-                  />
-                  <h5>руб.</h5>
-            </div>
-      </div>
       <!----------ДОПОЛНИТЕЛЬНЫЙ БЛОК---------->
       <div class="block-search-child" v-if="navBlock == 'sm_addition'">
             <h4>Дополнительный блок с данными для поиска</h4>
@@ -104,62 +68,25 @@
       <!-- компания -->
       <div class="block-modal">
             <Transition name="modalWindow">
-                  <div class="modal-search-window" v-if="currentDataSelected.currentCompany">
-                        <h5 class="h5-modal">{{ currentDataSelected["currentCompany"] }}</h5>
-                        <div class="div-delete" @click="delDataSelected(['currentCompany'])"></div>
+                  <div class="modal-search-window" v-if="currentDataSelected.company">
+                        <h5 class="h5-modal">{{ currentDataSelected["company"] }}</h5>
+                        <div class="div-delete" @click="delDataSelected(['company'])"></div>
                   </div>
             </Transition>
 
             <!-- Год -->
             <Transition name="modalWindow">
-                  <div
-                        class="modal-search-window"
-                        v-if="
-                              currentDataSelected.currentDateManufactureMin ||
-                              currentDataSelected.currentDateManufactureMax
-                        "
-                  >
-                        <h5 class="h5-modal">
-                              от {{ currentDataSelected["currentDateManufactureMin"] }} до
-                              {{ currentDataSelected["currentDateManufactureMax"] }}
-                        </h5>
-                        <div
-                              class="div-delete"
-                              @click="
-                                    delDataSelected([
-                                          'currentDateManufactureMin',
-                                          'currentDateManufactureMax',
-                                    ])
-                              "
-                        ></div>
+                  <div class="modal-search-window" v-if="currentDataSelected.year">
+                        <h5 class="h5-modal">{{ currentDataSelected["year"] }}</h5>
+                        <div class="div-delete" @click="delDataSelected(['year'])"></div>
                   </div>
             </Transition>
 
             <!-- Класс мотоцикла -->
             <Transition name="modalWindow">
-                  <div class="modal-search-window" v-if="currentDataSelected.currentmotoClass">
-                        <h5 class="h5-modal">{{ currentDataSelected["currentmotoClass"] }}</h5>
-                        <div
-                              class="div-delete"
-                              @click="delDataSelected(['currentmotoClass'])"
-                        ></div>
-                  </div>
-            </Transition>
-
-            <!-- ЦЕНА -->
-            <Transition name="modalWindow">
-                  <div
-                        class="modal-search-window"
-                        v-if="currentDataSelected.priceMin || currentDataSelected.priceMax"
-                  >
-                        <h5 class="h5-modal">
-                              от {{ currentDataSelected.priceMin }} до
-                              {{ currentDataSelected.priceMax }}
-                        </h5>
-                        <div
-                              class="div-delete"
-                              @click="delDataSelected(['priceMin', 'priceMax'])"
-                        ></div>
+                  <div class="modal-search-window" v-if="currentDataSelected.klass">
+                        <h5 class="h5-modal">{{ currentDataSelected["klass"] }}</h5>
+                        <div class="div-delete" @click="delDataSelected(['klass'])"></div>
                   </div>
             </Transition>
       </div>
@@ -179,6 +106,7 @@ export default {
       methods: {
             addDataSelected(valueName, value) {
                   this.currentDataSelected[valueName] = value;
+                  // console.log(this.currentDataSelected);
                   this.filterPosts();
             },
 
@@ -199,7 +127,6 @@ export default {
                   // "model",
                   "dateManufacture",
                   "motoClass",
-                  "price",
                   "currentDataSelected",
             ]),
       },
