@@ -37,9 +37,12 @@ export const posts = {
             async fetchPosts(context) {
                   // const response = await fetch("http://localhost:3000/bikes?_limit=" + limit);
                   // const response = await fetch("http://localhost:3000/bikes?company=Suzuki");
+                  // const response = await fetch("http://localhost:3000/bikes");
+                  // ---
                   const response = await fetch("http://localhost:3000/bikes");
                   const posts = await response.json();
                   context.commit("UPDATE_POSTS", posts);
+                  // ---
             },
 
             // async fetchFilterPosts(context) {
@@ -72,7 +75,7 @@ export const posts = {
                   //       // return console.log(el);
                   // });
                   let nameKeys = Object.keys(state.currentDataSelected);
-                  console.log(nameKeys);
+                  // console.log(nameKeys);
 
                   switch (nameKeys.length) {
                         case 0:
@@ -151,7 +154,7 @@ export const posts = {
                   return state.dataPosts;
             },
             posts__count(state) {
-                  return state.dataPosts.length;
+                  return state.filteredPosts.length;
             },
       },
 };

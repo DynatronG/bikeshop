@@ -104,7 +104,7 @@ main {
      background-color: #403d39;
      border-radius: 10px;
      /* width: 100%; */
-     padding: 20px;
+     padding: 10px;
      display: flex;
      flex-flow: row wrap;
      /* justify-content: space-evenly; */
@@ -112,10 +112,23 @@ main {
 }
 .block-bike{
       display: flex;
-      /* border: 1px solid red; */
+      flex-flow: row wrap;
+      justify-content: space-between;
+      border: 1px solid red;
+      width: 100%;
+
+}
+.bike-text-wrapper{
+      background-color: #403d39;
+      border-radius: 10px;
+      width: 300px;
+      padding: 10px;
+      display: flex;
+      flex-flow: row wrap;
 }
 .img-bike{
-      width: 460px;
+      height: 345px;
+      /* height: 20%; */
       border-radius: 2%;
 }
 .blocks {

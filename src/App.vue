@@ -32,19 +32,19 @@
                               <button @click="isShowBike = false">Назад</button>
                         </div>
                         <div class="block-bike">
-                              <div class="block-bike-wrapper">
-                                    <h4 class="bikeTxt">Производитель: {{ bike[0].company }}</h4>
-                                    <h4 class="bikeTxt">Модель: {{ bike[0].model }}</h4>
-                                    <h4 class="bikeTxt">Год выпуска: {{ bike[0].year }}</h4>
-                                    <h4 class="bikeTxt">Мощность двигателя: {{ bike[0].year }}</h4>
-                                    <h4 class="bikeTxt">Класс мотоцикла: {{ bike[0].klass }}</h4>
-                                    <h4 class="bikeTxt">Цена: {{ bike[0].price }}</h4>
-                                    <h4 class="bikeTxt">В наличии: {{ bike[0].available }}</h4>
-                                    <h4 class="bikeTxt">Описание: {{ bike[0].description }}</h4>
+                              <div class="bike-text-wrapper">
+                                    <h4 class="bikeTxt">Производитель: {{ bike.company }}</h4>
+                                    <h4 class="bikeTxt">Модель: {{ bike.model }}</h4>
+                                    <h4 class="bikeTxt">Год выпуска: {{ bike.year }}</h4>
+                                    <h4 class="bikeTxt">Мощность двигателя: {{ bike.year }}</h4>
+                                    <h4 class="bikeTxt">Класс мотоцикла: {{ bike.klass }}</h4>
+                                    <h4 class="bikeTxt">Цена: {{ bike.price }}</h4>
+                                    <h4 class="bikeTxt">В наличии: {{ bike.available }}</h4>
+                                    <h4 class="bikeTxt">Описание: {{ bike.description }}</h4>
                               </div>
                               <img
                                     class="img-bike"
-                                    :src="require(`@/assets/img/moto${bike[0].image}`)"
+                                    :src="require(`@/assets/img/moto${bike.image}`)"
                               />
                         </div>
                   </div>
@@ -61,7 +61,7 @@ import headerBlock from "@/components/header-block.vue";
 import SearchBlock from "@/components/search-block.vue";
 import FooterBlock from "@/components/footer-block.vue";
 import { mapGetters, mapActions } from "vuex";
-
+import { getDatabase } from "firebase/database";
 export default {
       name: "App",
       components: {
@@ -77,13 +77,9 @@ export default {
       },
       methods: {
             showBike(id) {
-                  console.log(id);
                   this.isShowBike = true;
-                  this.bike = this.filtered__Posts.filter((el) => {
-                        return el.id === id;
-                  });
-                  // this.bike = this.bike[0];
-                  console.log(this.bike);
+                  this.bike = this.filtered__Posts.find((el) => el.id === id);
+                  // console.log(this.bike);
             },
             // ...mapActions({
             //       fetchPosts: "fetchPosts",
@@ -102,7 +98,11 @@ export default {
             ...mapGetters("posts", ["all__posts", "posts__count", "filtered__Posts"]),
       },
       async mounted() {
-            this.fetchPosts();
+            // this.fetchPosts();
+            // ---
+
+            const db = getDatabase();
+            console.table(db);
       },
 };
 </script>
