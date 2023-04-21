@@ -61,7 +61,8 @@ import headerBlock from "@/components/header-block.vue";
 import SearchBlock from "@/components/search-block.vue";
 import FooterBlock from "@/components/footer-block.vue";
 import { mapGetters, mapActions } from "vuex";
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
+
 export default {
       name: "App",
       components: {
@@ -100,9 +101,13 @@ export default {
       async mounted() {
             // this.fetchPosts();
             // ---
-
             const db = getDatabase();
-            console.table(db);
+            const dataRef = ref(db);
+            onValue(dataRef, (snapshot) => {
+                  const data = snapshot.val();
+                  console.log(data.bikes); //объект bikes
+                  // console.log(data.bikes); //массив объектов
+            });
       },
 };
 </script>

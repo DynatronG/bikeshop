@@ -14,8 +14,6 @@ const firebaseConfig = {
       appId: "1:373595041006:web:08f2db470b23ce523897ff",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
+const apps = initializeApp(firebaseConfig);
+const database = getDatabase(apps);
 export { database };
