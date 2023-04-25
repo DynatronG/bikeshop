@@ -49,6 +49,7 @@
                         </div>
                   </div>
                   <div>
+                        <button>Добавить пост</button>
                         <hr />
                   </div>
             </main>
@@ -61,7 +62,6 @@ import headerBlock from "@/components/header-block.vue";
 import SearchBlock from "@/components/search-block.vue";
 import FooterBlock from "@/components/footer-block.vue";
 import { mapGetters, mapActions } from "vuex";
-import { getDatabase, ref, onValue } from "firebase/database";
 
 export default {
       name: "App",
@@ -85,7 +85,7 @@ export default {
             // ...mapActions({
             //       fetchPosts: "fetchPosts",
             // }),
-            ...mapActions("posts", ["fetchPosts"]),
+            ...mapActions("posts", ["fetchPosts", "addPost"]),
       },
       computed: {
             // ...mapState({ vxVar: (state) => state.allData.vxVar }),
@@ -99,15 +99,8 @@ export default {
             ...mapGetters("posts", ["all__posts", "posts__count", "filtered__Posts"]),
       },
       async mounted() {
-            // this.fetchPosts();
+            this.fetchPosts();
             // ---
-            const db = getDatabase();
-            const dataRef = ref(db);
-            onValue(dataRef, (snapshot) => {
-                  const data = snapshot.val();
-                  console.log(data.bikes); //объект bikes
-                  // console.log(data.bikes); //массив объектов
-            });
       },
 };
 </script>

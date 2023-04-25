@@ -1,8 +1,10 @@
+import { getDatabase, ref, set, onValue } from "firebase/database";
 export const posts = {
       namespaced: true,
       state: {
             dataPosts: [],
             filteredPosts: [],
+            addPostData: [],
             company: [
                   { name: "Honda", image: "/honda.png" },
                   { name: "Suzuki", image: "/suzuki.png" },
@@ -34,26 +36,35 @@ export const posts = {
       // =================================================================
       actions: {
             //Запрос в базу данных
-            async fetchPosts(context) {
-                  // const response = await fetch("http://localhost:3000/bikes?_limit=" + limit);
-                  // const response = await fetch("http://localhost:3000/bikes?company=Suzuki");
-                  // const response = await fetch("http://localhost:3000/bikes");
-                  // ---
-                  const response = await fetch("http://localhost:3000/bikes");
-                  const posts = await response.json();
-                  context.commit("UPDATE_POSTS", posts);
-                  // ---
-            },
-
-            // async fetchFilterPosts(context) {
-            //       const res = await fetch("http://localhost:3000/bikes?company=Suzuki");
-            //       const filterPosts = await res.json();
-            //       context.commit("FILTER_POSTS", filterPosts);
+            // async fetchPosts(context) {
+            //       // const response = await fetch("http://localhost:3000/bikes?_limit=" + limit);
+            //       // const response = await fetch("http://localhost:3000/bikes?company=Suzuki");
+            //       // const response = await fetch("http://localhost:3000/bikes");
+            //       // ---
+            //       const response = await fetch("http://localhost:3000/bikes");
+            //       const posts = await response.json();
+            //       context.commit("UPDATE_POSTS", posts);
+            //       // ---
             // },
-
+            //---
+            async fetchPosts(context) {
+                  const db = await getDatabase();
+                  const dataRef = ref(db);
+                  onValue(dataRef, (snapshot) => {
+                        const data = snapshot.val();
+                        const posts = data.bikes;
+                        context.commit("UPDATE_POSTS", posts);
+                  });
+            },
+            async addPost() {
+                  const db = await getDatabase();
+                  set(ref(db, "bikes/"), {
+                        id: 19,
+                        company: "honda",
+                  });
+            },
             filterPosts(context) {
                   context.commit("FILTER_POSTS");
-                  // console.log(val[1]);
             },
       },
 
@@ -62,20 +73,9 @@ export const posts = {
                   state.dataPosts = posts;
                   state.filteredPosts = posts;
             },
-            // FILTER_POSTS(state, val) {
-            //       state.filteredPosts = state.dataPosts.filter(function (el) {
-            //             return el[val[0]] === val[1];
-            //       });
 
             FILTER_POSTS(state) {
-                  // let valueName = "company";
-                  // let value = state.currentDataSelected.currentCompany;
-                  // state.filteredPosts = state.dataPosts.filter(function (el) {
-                  //       return el[valueName] === value;
-                  //       // return console.log(el);
-                  // });
                   let nameKeys = Object.keys(state.currentDataSelected);
-                  // console.log(nameKeys);
 
                   switch (nameKeys.length) {
                         case 0:
