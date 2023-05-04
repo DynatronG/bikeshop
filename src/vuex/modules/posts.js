@@ -58,21 +58,19 @@ export const posts = {
             //       context.commit("UPDATE_POSTS", posts);
             //       // ---
             // },
-            //---
+
+            //Первоначальный запрос с сервера всех данных
             async fetchPosts(context) {
                   let posts = [];
                   const db = getFirestore();
                   const querySnapshot = await getDocs(collection(db, "bikes"));
                   querySnapshot.forEach((doc) => {
                         posts.push(doc.data());
-
-                        // console.log(doc.id, " => ", doc.data());
                   });
-                  // console.log(posts);
-                  // const posts = data.bikes;
                   context.commit("UPDATE_POSTS", posts);
             },
 
+            //Запрос с сервера с фильтрацией
             async filterPosts(context) {
                   //Массив ключей
                   let postsKeys = Object.keys(context.state.currentDataSelected);
@@ -89,10 +87,6 @@ export const posts = {
                               break;
                         }
                         case 1: {
-                              // q = query(
-                              //       collection(db, "bikes"),
-                              //       where(postsKeys[0], "==", postsValue[0])
-                              // );
                               q = query(
                                     collection(db, "bikes"),
                                     where(
@@ -142,7 +136,7 @@ export const posts = {
                         }
                   }
                   //------------------------------------------
-                  //Запрос
+                  //Строка запроса
                   const querySnapshot = await getDocs(q);
                   querySnapshot.forEach((doc) => {
                         posts.push(doc.data());

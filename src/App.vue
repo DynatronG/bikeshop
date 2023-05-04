@@ -26,28 +26,31 @@
                               />
                         </div>
                   </div>
-
-                  <div class="block-bike-wrapper" v-if="isShowBike">
-                        <div>
-                              <button @click="isShowBike = false">Назад</button>
-                        </div>
-                        <div class="block-bike">
-                              <div class="bike-text-wrapper">
-                                    <h4 class="bikeTxt">Производитель: {{ bike.company }}</h4>
-                                    <h4 class="bikeTxt">Модель: {{ bike.model }}</h4>
-                                    <h4 class="bikeTxt">Год выпуска: {{ bike.year }}</h4>
-                                    <h4 class="bikeTxt">Мощность двигателя: {{ bike.year }}</h4>
-                                    <h4 class="bikeTxt">Класс мотоцикла: {{ bike.klass }}</h4>
-                                    <h4 class="bikeTxt">Цена: {{ bike.price }}</h4>
-                                    <h4 class="bikeTxt">В наличии: {{ bike.available }}</h4>
-                                    <h4 class="bikeTxt">Описание: {{ bike.description }}</h4>
+                  <Transition name="modalWindow">
+                        <div class="block-bike-wrapper" v-if="isShowBike">
+                              <div>
+                                    <button @click="isShowBike = false">Назад</button>
                               </div>
-                              <img
-                                    class="img-bike"
-                                    :src="require(`@/assets/img/moto${bike.image}`)"
-                              />
+                              <div class="block-bike">
+                                    <div class="bike-text-wrapper">
+                                          <h4 class="bikeTxt">Производитель: {{ bike.company }}</h4>
+                                          <h4 class="bikeTxt">Модель: {{ bike.model }}</h4>
+                                          <h4 class="bikeTxt">Год выпуска: {{ bike.year }}</h4>
+                                          <h4 class="bikeTxt">
+                                                Мощность двигателя: {{ bike.year }}
+                                          </h4>
+                                          <h4 class="bikeTxt">Класс мотоцикла: {{ bike.klass }}</h4>
+                                          <h4 class="bikeTxt">Цена: {{ bike.price }}</h4>
+                                          <h4 class="bikeTxt">В наличии: {{ bike.available }}</h4>
+                                          <h4 class="bikeTxt">Описание: {{ bike.description }}</h4>
+                                    </div>
+                                    <img
+                                          class="img-bike"
+                                          :src="require(`@/assets/img/moto${bike.image}`)"
+                                    />
+                              </div>
                         </div>
-                  </div>
+                  </Transition>
                   <div>
                         <button>Добавить пост</button>
                         <hr />

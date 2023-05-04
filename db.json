@@ -1,7 +1,6 @@
 {
   "bikes": [
     {
-      "id": 0,
       "image": "/honda/cb_750_1995_001.jpg",
       "company": "Honda",
       "model": "cb",
@@ -13,7 +12,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 1,
       "image": "/honda/cb_750_1996_001.jpg",
       "company": "Honda",
       "model": "cb",
@@ -25,7 +23,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 2,
       "image": "/honda/cbr_250_1994_001.jpg",
       "company": "Honda",
       "model": "cbr",
@@ -37,7 +34,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 3,
       "image": "/honda/cbr_250_1995_001.jpg",
       "company": "Honda",
       "model": "cbr",
@@ -49,7 +45,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 4,
       "image": "/honda/cbr_250_1997_002.jpg",
       "company": "Honda",
       "model": "cbr",
@@ -61,7 +56,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 5,
       "image": "/suzuki/drz_250_2004_001.jpg",
       "company": "Suzuki",
       "model": "drz",
@@ -73,7 +67,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 6,
       "image": "/suzuki/drz_450_2005_001.jpg",
       "company": "Suzuki",
       "model": "drz",
@@ -85,7 +78,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 7,
       "image": "/suzuki/drz_450_2008_001.jpg",
       "company": "Suzuki",
       "model": "drz",
@@ -97,7 +89,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 8,
       "image": "/yamaha/fz6r_600_2010.jpg",
       "company": "Yamaha",
       "model": "fz6r",
@@ -109,7 +100,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 9,
       "image": "/yamaha/wrf_250_2004.jpg",
       "company": "Yamaha",
       "model": "wr250f",
@@ -121,7 +111,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 10,
       "image": "/yamaha/wrf_400_2003.jpg",
       "company": "Yamaha",
       "model": "wr400f",
@@ -133,7 +122,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 11,
       "image": "/kawasaki/kx_250_2022.jpg",
       "company": "Kawasaki",
       "model": "kx",
@@ -145,7 +133,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 12,
       "image": "/kawasaki/ninja_400_2014.jpg",
       "company": "Kawasaki",
       "model": "ninja",
@@ -157,7 +144,6 @@
       "description":"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure necessitatibus tempora corporis eveniet et ipsam odio similique repellat distinctio quibusdam perspiciatis id, nemo dolorum quod ipsa labore adipisci dignissimos unde!"
     },
     {
-      "id": 13,
       "image": "/kawasaki/Versys_650_2012.jpg",
       "company": "Kawasaki",
       "model": "Versys",

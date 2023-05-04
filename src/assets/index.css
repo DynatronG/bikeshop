@@ -237,3 +237,13 @@ h5{
         color: #eb5e28; 
         font-weight: normal;    
 }
+/* Блок обзора мото */
+.modalWindow-enter-active,
+.modalWindow-leave-active {
+      transition: all 1s ease;
+}
+.modalWindow-enter-from,
+.modalWindow-leave-to {
+      opacity: 0;
+      transform: translateX(80px);
+}
