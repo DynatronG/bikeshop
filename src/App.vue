@@ -18,7 +18,7 @@
                         >
                               <h4 class="txtNameBike">
                                     {{ item.company }}
-                                    {{ item.model }} {{ item.cc }} {{ item.id }}
+                                    {{ item.model }} {{ item.cc }} {{ item.year }}
                               </h4>
                               <img
                                     class="img_blocks"

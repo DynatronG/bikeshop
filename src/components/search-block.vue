@@ -48,17 +48,25 @@
             <h4>Дополнительный блок с данными для поиска</h4>
 
             <label class="b-contain">
-                  <span>В наличии</span><input type="checkbox" />
+                  <span>В наличии</span> ><input
+                        type="checkbox"
+                        v-model="checkAvailable"
+                        @change="
+                              checkAvailable
+                                    ? addDataSelected('available', 'yes')
+                                    : delDataSelected(['available'])
+                        " />
                   <div class="b-input"></div
             ></label>
 
             <label class="b-contain"
-                  ><span>С пробегом</span><input type="checkbox" />
-                  <div class="b-input"></div
-            ></label>
-
-            <label class="b-contain"
-                  ><span>Без пробега</span><input type="checkbox" />
+                  ><span>Без пробега</span
+                  ><input
+                        type="checkbox"
+                        v-model="checkUsed"
+                        @change="
+                              checkUsed ? addDataSelected('used', 'yes') : delDataSelected(['used'])
+                        " />
                   <div class="b-input"></div
             ></label>
       </div>
@@ -89,6 +97,33 @@
                         <div class="div-delete" @click="delDataSelected(['klass'])"></div>
                   </div>
             </Transition>
+
+            <!-- В наличии -->
+            <Transition name="modalWindow">
+                  <div class="modal-search-window" v-if="currentDataSelected.available">
+                        <h5 class="h5-modal">В наличи - {{ currentDataSelected["available"] }}</h5>
+                        <div
+                              class="div-delete"
+                              @click="
+                                    delDataSelected(['available']);
+                                    checkAvailable = false;
+                              "
+                        ></div>
+                  </div>
+            </Transition>
+            <!-- С пробегом -->
+            <Transition name="modalWindow">
+                  <div class="modal-search-window" v-if="currentDataSelected.used">
+                        <h5 class="h5-modal">С пробегом - {{ currentDataSelected["used"] }}</h5>
+                        <div
+                              class="div-delete"
+                              @click="
+                                    delDataSelected(['used']);
+                                    checkUsed = false;
+                              "
+                        ></div>
+                  </div>
+            </Transition>
       </div>
 </template>
 
@@ -99,11 +134,16 @@ export default {
       data() {
             return {
                   navBlock: "",
+                  checkAvailable: false,
+                  checkUsed: false,
             };
       },
 
       // -------------------METHODS-------------------
       methods: {
+            cnsl(value) {
+                  console.log(value);
+            },
             addDataSelected(valueName, value) {
                   this.currentDataSelected[valueName] = value;
                   // console.log(this.currentDataSelected);

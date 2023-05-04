@@ -1,4 +1,16 @@
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import {
+      collection,
+      // addDoc,
+      // setDoc,
+      // doc,
+      getFirestore,
+      // getCountFromServer,
+      // updateDoc,
+      // deleteField,
+      query,
+      where,
+      getDocs,
+} from "firebase/firestore";
 export const posts = {
       namespaced: true,
       state: {
@@ -28,8 +40,8 @@ export const posts = {
 
             // currentDataSelected: {
             //       company: "",
-            //       dateMan: "",
-            //       currentmotoClass: "",
+            //       year: "",
+            //       klass: "",
             // },
             currentDataSelected: {},
       },
@@ -48,23 +60,96 @@ export const posts = {
             // },
             //---
             async fetchPosts(context) {
-                  const db = await getDatabase();
-                  const dataRef = ref(db);
-                  onValue(dataRef, (snapshot) => {
-                        const data = snapshot.val();
-                        const posts = data.bikes;
-                        context.commit("UPDATE_POSTS", posts);
+                  let posts = [];
+                  const db = getFirestore();
+                  const querySnapshot = await getDocs(collection(db, "bikes"));
+                  querySnapshot.forEach((doc) => {
+                        posts.push(doc.data());
+
+                        // console.log(doc.id, " => ", doc.data());
                   });
+                  // console.log(posts);
+                  // const posts = data.bikes;
+                  context.commit("UPDATE_POSTS", posts);
             },
-            async addPost() {
-                  const db = await getDatabase();
-                  set(ref(db, "bikes/"), {
-                        id: 19,
-                        company: "honda",
+
+            async filterPosts(context) {
+                  //Массив ключей
+                  let postsKeys = Object.keys(context.state.currentDataSelected);
+                  //Массив значений
+                  let postsValue = Object.values(context.state.currentDataSelected);
+                  let q = null;
+                  let posts = [];
+                  const db = getFirestore();
+
+                  //Количество параметров для запроса
+                  switch (postsKeys.length) {
+                        case 0: {
+                              q = query(collection(db, "bikes"));
+                              break;
+                        }
+                        case 1: {
+                              // q = query(
+                              //       collection(db, "bikes"),
+                              //       where(postsKeys[0], "==", postsValue[0])
+                              // );
+                              q = query(
+                                    collection(db, "bikes"),
+                                    where(
+                                          postsKeys[0],
+                                          Number.isInteger(postsValue[0]) ? ">=" : "==",
+                                          postsValue[0]
+                                    )
+                              );
+                              break;
+                        }
+                        case 2: {
+                              q = query(
+                                    collection(db, "bikes"),
+                                    where(
+                                          postsKeys[0],
+                                          Number.isInteger(postsValue[0]) ? ">=" : "==",
+                                          postsValue[0]
+                                    ),
+                                    where(
+                                          postsKeys[1],
+                                          Number.isInteger(postsValue[1]) ? ">=" : "==",
+                                          postsValue[1]
+                                    )
+                              );
+                              break;
+                        }
+                        case 3: {
+                              q = query(
+                                    collection(db, "bikes"),
+                                    where(
+                                          postsKeys[0],
+                                          Number.isInteger(postsValue[0]) ? ">=" : "==",
+                                          postsValue[0]
+                                    ),
+                                    where(
+                                          postsKeys[1],
+                                          Number.isInteger(postsValue[1]) ? ">=" : "==",
+                                          postsValue[1]
+                                    ),
+                                    where(
+                                          postsKeys[2],
+                                          Number.isInteger(postsValue[2]) ? ">=" : "==",
+                                          postsValue[2]
+                                    )
+                              );
+                              break;
+                        }
+                  }
+                  //------------------------------------------
+                  //Запрос
+                  const querySnapshot = await getDocs(q);
+                  querySnapshot.forEach((doc) => {
+                        posts.push(doc.data());
+                        // console.log(doc.id, " => ", doc.data());
                   });
-            },
-            filterPosts(context) {
-                  context.commit("FILTER_POSTS");
+                  // console.log(posts);
+                  context.commit("UPDATE_POSTS", posts);
             },
       },
 
@@ -72,77 +157,6 @@ export const posts = {
             UPDATE_POSTS(state, posts) {
                   state.dataPosts = posts;
                   state.filteredPosts = posts;
-            },
-
-            FILTER_POSTS(state) {
-                  let nameKeys = Object.keys(state.currentDataSelected);
-
-                  switch (nameKeys.length) {
-                        case 0:
-                              state.filteredPosts = state.dataPosts;
-                              break;
-                        case 1:
-                              {
-                                    let value = state.currentDataSelected[nameKeys[0]];
-                                    state.filteredPosts = state.dataPosts.filter(function (el) {
-                                          return el[nameKeys[0]] == value;
-                                          // return console.log(el[nameKeys]);
-                                    });
-                              }
-                              break;
-                        case 2:
-                              {
-                                    let value = state.currentDataSelected[nameKeys[0]];
-                                    let value2 = state.currentDataSelected[nameKeys[1]];
-                                    state.filteredPosts = state.dataPosts.filter(function (el) {
-                                          return (
-                                                el[nameKeys[0]] == value &&
-                                                el[nameKeys[1]] == value2
-                                          );
-                                    });
-                              }
-                              break;
-                        case 3:
-                              {
-                                    let value = state.currentDataSelected[nameKeys[0]];
-                                    let value2 = state.currentDataSelected[nameKeys[1]];
-                                    let value3 = state.currentDataSelected[nameKeys[2]];
-                                    state.filteredPosts = state.dataPosts.filter(function (el) {
-                                          return (
-                                                el[nameKeys[0]] == value &&
-                                                el[nameKeys[1]] == value2 &&
-                                                el[nameKeys[2]] == value3
-                                          );
-                                    });
-                              }
-                              break;
-                  }
-                  // -------------Рабочий
-                  // state.filteredPosts = state.dataPosts;
-                  // for (let item in state.currentDataSelected) {
-                  //       console.log(countKeys);
-                  //       let value = state.currentDataSelected[item];
-                  //       state.filteredPosts = state.dataPosts.filter(function (el) {
-                  //             return el[item] === value;
-                  //             // return console.log("Первый" + el[item] + "Второй" + value);
-                  //       });
-                  // }
-                  //------------------
-
-                  //---
-                  // state.filteredPosts = state.dataPosts.filter(function (el) {
-                  //       return el[valueName] === value;
-                  //       // return console.log(el);
-                  // });
-                  // console.log(Object.keys(valueName));
-                  //---
-
-                  // console.log(lengthSelectedData);
-                  // console.log(
-                  //       "valueName - " + valueName,
-                  //       "value - " + value,
-                  //       "filteredPosts - " + state.filteredPosts
-                  // );
             },
       },
 

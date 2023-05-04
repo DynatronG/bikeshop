@@ -1,8 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-
-// TODO: Replace the following with your app's Firebase project configuration
-// See: https://firebase.google.com/docs/web/learn-more#config-object
 
 const firebaseConfig = {
       apiKey: "AIzaSyBLiFFZe8w4JjMc_sLVG8Ol6ISh6gB46lI",
@@ -14,6 +10,9 @@ const firebaseConfig = {
       appId: "1:373595041006:web:08f2db470b23ce523897ff",
 };
 
-const apps = initializeApp(firebaseConfig);
-const database = getDatabase(apps);
-export { database };
+// Initialize Firebase
+// const apps = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
+// const db = getFirestore(apps);
+// export {db}
+// console.log(db);
