@@ -7,6 +7,7 @@
                   <!-- <post-form></post-form> -->
                   <div>
                         <p>Выбрано мотоциклов: {{ posts__count }}</p>
+                        <!-- <img :src="download__url" /> -->
                   </div>
 
                   <div class="mainBlock" v-if="!isShowBike">
@@ -20,10 +21,7 @@
                                     {{ item.company }}
                                     {{ item.model }} {{ item.cc }} {{ item.year }}
                               </h4>
-                              <img
-                                    class="img_blocks"
-                                    :src="require(`@/assets/img/moto${item.image}`)"
-                              />
+                              <img class="img_blocks" :src="item.image" />
                         </div>
                   </div>
                   <Transition name="modalWindow">
@@ -44,15 +42,11 @@
                                           <h4 class="bikeTxt">В наличии: {{ bike.available }}</h4>
                                           <h4 class="bikeTxt">Описание: {{ bike.description }}</h4>
                                     </div>
-                                    <img
-                                          class="img-bike"
-                                          :src="require(`@/assets/img/moto${bike.image}`)"
-                                    />
+                                    <img class="img-bike" :src="bike.image" />
                               </div>
                         </div>
                   </Transition>
                   <div>
-                        <button>Добавить пост</button>
                         <hr />
                   </div>
             </main>
@@ -85,10 +79,11 @@ export default {
                   this.bike = this.filtered__Posts.find((el) => el.id === id);
                   // console.log(this.bike);
             },
+
             // ...mapActions({
             //       fetchPosts: "fetchPosts",
             // }),
-            ...mapActions("posts", ["fetchPosts", "addPost"]),
+            ...mapActions("posts", ["fetchPosts", "getImg"]),
       },
       computed: {
             // ...mapState({ vxVar: (state) => state.allData.vxVar }),
@@ -99,10 +94,11 @@ export default {
             //       postsCount: "postsCount",
             // }),
 
-            ...mapGetters("posts", ["all__posts", "posts__count", "filtered__Posts"]),
+            ...mapGetters("posts", ["posts__count", "filtered__Posts", "download__url"]),
       },
       async mounted() {
             this.fetchPosts();
+            this.getImg();
             // ---
       },
 };

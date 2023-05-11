@@ -11,12 +11,15 @@ import {
       where,
       getDocs,
 } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 export const posts = {
       namespaced: true,
       state: {
+            url: "",
             dataPosts: [],
             filteredPosts: [],
             addPostData: [],
+            pathStorage: "",
             company: [
                   { name: "Honda", image: "/honda.png" },
                   { name: "Suzuki", image: "/suzuki.png" },
@@ -47,17 +50,18 @@ export const posts = {
       },
       // =================================================================
       actions: {
-            //Запрос в базу данных
-            // async fetchPosts(context) {
-            //       // const response = await fetch("http://localhost:3000/bikes?_limit=" + limit);
-            //       // const response = await fetch("http://localhost:3000/bikes?company=Suzuki");
-            //       // const response = await fetch("http://localhost:3000/bikes");
-            //       // ---
-            //       const response = await fetch("http://localhost:3000/bikes");
-            //       const posts = await response.json();
-            //       context.commit("UPDATE_POSTS", posts);
-            //       // ---
-            // },
+            getImg(context) {
+                  const storage = getStorage();
+                  const pathStorage = ref(storage, "moto/honda/cb_750_1995_001.jpg");
+                  // console.log("Ссылка  - " + pathStorage);
+                  let download_url = "sdfg";
+                  getDownloadURL(pathStorage).then(
+                        (temp_url) => (
+                              (download_url = temp_url), context.commit("GET_STORAGE", download_url)
+                        )
+                  );
+                  // console.log("Ссылка на картинку" + download_url);
+            },
 
             //Первоначальный запрос с сервера всех данных
             async fetchPosts(context) {
@@ -148,6 +152,9 @@ export const posts = {
       },
 
       mutations: {
+            GET_STORAGE(state, download_url) {
+                  state.url = download_url;
+            },
             UPDATE_POSTS(state, posts) {
                   state.dataPosts = posts;
                   state.filteredPosts = posts;
@@ -163,6 +170,9 @@ export const posts = {
             },
             posts__count(state) {
                   return state.filteredPosts.length;
+            },
+            download__url(state) {
+                  return state.url;
             },
       },
 };

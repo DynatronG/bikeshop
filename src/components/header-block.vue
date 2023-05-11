@@ -3,14 +3,12 @@
             <div class="head">
                   <div class="imgHead"></div>
             </div>
-            <nav-block></nav-block>
+            <nav class="navBar">Навигация</nav>
       </header>
 </template>
 
 <script>
-import NavBlock from "./nav-block.vue";
 export default {
-      components: { NavBlock },
       data() {
             return {};
       },
@@ -18,4 +16,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.navBar {
+      color: #fffcf2;
+      background-color: #403d39;
+      height: 50px;
+      flex-shrink: 0;
+}
+</style>

@@ -65,7 +65,7 @@
                         type="checkbox"
                         v-model="checkUsed"
                         @change="
-                              checkUsed ? addDataSelected('used', 'yes') : delDataSelected(['used'])
+                              checkUsed ? addDataSelected('used', 'no') : delDataSelected(['used'])
                         " />
                   <div class="b-input"></div
             ></label>
@@ -101,7 +101,7 @@
             <!-- В наличии -->
             <Transition name="modalWindow">
                   <div class="modal-search-window" v-if="currentDataSelected.available">
-                        <h5 class="h5-modal">В наличи - {{ currentDataSelected["available"] }}</h5>
+                        <h5 class="h5-modal">В наличии</h5>
                         <div
                               class="div-delete"
                               @click="
@@ -114,7 +114,7 @@
             <!-- С пробегом -->
             <Transition name="modalWindow">
                   <div class="modal-search-window" v-if="currentDataSelected.used">
-                        <h5 class="h5-modal">С пробегом - {{ currentDataSelected["used"] }}</h5>
+                        <h5 class="h5-modal">Без пробега</h5>
                         <div
                               class="div-delete"
                               @click="
