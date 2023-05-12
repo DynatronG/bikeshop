@@ -71,6 +71,7 @@ export const posts = {
                   querySnapshot.forEach((doc) => {
                         posts.push(doc.data());
                   });
+                  //   console.log(posts);
                   context.commit("UPDATE_POSTS", posts);
             },
 

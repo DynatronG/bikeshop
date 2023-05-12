@@ -3,7 +3,11 @@
             <div class="head">
                   <div class="imgHead"></div>
             </div>
-            <nav class="navBar">Навигация</nav>
+            <nav class="navBar">
+                  <h4 class="txt_navigator">О компании</h4>
+                  <h4 class="txt_navigator">Добавить мотоцикл</h4>
+                  <h4 class="txt_navigator">Войти</h4>
+            </nav>
       </header>
 </template>
 
@@ -18,9 +22,20 @@ export default {
 
 <style scoped>
 .navBar {
-      color: #fffcf2;
-      background-color: #403d39;
-      height: 50px;
+      /* color: #fffcf2; */
+      background-color: #252422;
+      /* height: 50px; */
+      display: flex;
       flex-shrink: 0;
+}
+
+.txt_navigator {
+      color: #fffcf2;
+      /* font-style: italic; */
+      font-weight: inherit;
+      /* border: 1px solid red; */
+      /* width: 100px; */
+      margin: 10px 20px;
+      display: inline-block;
 }
 </style>

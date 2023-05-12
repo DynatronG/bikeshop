@@ -133,7 +133,7 @@ import { mapState, mapActions } from "vuex";
 export default {
       data() {
             return {
-                  navBlock: "",
+                  navBlock: "sm_models",
                   checkAvailable: false,
                   checkUsed: false,
             };

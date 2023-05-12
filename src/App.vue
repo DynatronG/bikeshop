@@ -10,6 +10,7 @@
                         <!-- <img :src="download__url" /> -->
                   </div>
 
+                  <!-- Блок мотоциклов -->
                   <div class="mainBlock" v-if="!isShowBike">
                         <div
                               class="blocks"
@@ -24,6 +25,8 @@
                               <img class="img_blocks" :src="item.image" />
                         </div>
                   </div>
+
+                  <!-- Блок информации о мотоцикле -->
                   <Transition name="modalWindow">
                         <div class="block-bike-wrapper" v-if="isShowBike">
                               <div>
@@ -77,7 +80,7 @@ export default {
             showBike(id) {
                   this.isShowBike = true;
                   this.bike = this.filtered__Posts.find((el) => el.id === id);
-                  // console.log(this.bike);
+                  //   console.log(this.filtered__Posts);
             },
 
             // ...mapActions({
