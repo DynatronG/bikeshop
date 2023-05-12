@@ -4,7 +4,7 @@
                   <div class="imgHead"></div>
             </div>
             <nav class="navBar">
-                  <h4 class="txt_navigator">О компании</h4>
+                  <router-link><h4 class="txt_navigator">О компании</h4></router-link>
                   <h4 class="txt_navigator">Добавить мотоцикл</h4>
                   <h4 class="txt_navigator">Войти</h4>
             </nav>
