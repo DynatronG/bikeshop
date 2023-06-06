@@ -4,8 +4,10 @@
                   <div class="imgHead"></div>
             </div>
             <nav class="navBar">
-                  <router-link><h4 class="txt_navigator">О компании</h4></router-link>
-                  <h4 class="txt_navigator">Добавить мотоцикл</h4>
+                  <h4 class="txt_navigator"><router-link to="/about">О компании</router-link></h4>
+                  <h4 class="txt_navigator">
+                        <router-link to="/addBike">Добавить мотоцикл</router-link>
+                  </h4>
                   <h4 class="txt_navigator">Войти</h4>
             </nav>
       </header>
@@ -37,5 +39,10 @@ export default {
       /* width: 100px; */
       margin: 10px 20px;
       display: inline-block;
+}
+a {
+      color: inherit;
+      outline: none;
+      text-decoration: none;
 }
 </style>
