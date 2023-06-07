@@ -20,7 +20,7 @@
       <!----------БЛОК ГОД---------->
       <div class="block-search-child" v-if="navBlock == 'sm_year'">
             <h4>Год выпуска с</h4>
-            <select @change="addDataSelected('year', Number($event.target.value))">
+            <select class="select" @change="addDataSelected('year', Number($event.target.value))">
                   <!-- <option selected value="1">1960</option> -->
                   <option v-for="item in dateManufacture" :key="item">
                         {{ item }}

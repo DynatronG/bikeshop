@@ -1,6 +1,6 @@
 import {
       collection,
-      // addDoc,
+      addDoc,
       // setDoc,
       // doc,
       getFirestore,
@@ -11,15 +11,13 @@ import {
       where,
       getDocs,
 } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
+
 export const posts = {
       namespaced: true,
       state: {
-            url: "",
             dataPosts: [],
             filteredPosts: [],
-            addPostData: [],
-            pathStorage: "",
+            addBikePost: [],
             company: [
                   { name: "Honda", image: "/honda.png" },
                   { name: "Suzuki", image: "/suzuki.png" },
@@ -50,19 +48,13 @@ export const posts = {
       },
       // =================================================================
       actions: {
-            getImg(context) {
-                  const storage = getStorage();
-                  const pathStorage = ref(storage, "moto/honda/cb_750_1995_001.jpg");
-                  // console.log("Ссылка  - " + pathStorage);
-                  let download_url = "sdfg";
-                  getDownloadURL(pathStorage).then(
-                        (temp_url) => (
-                              (download_url = temp_url), context.commit("GET_STORAGE", download_url)
-                        )
-                  );
-                  // console.log("Ссылка на картинку" + download_url);
+            async addBike() {
+                  const db = getFirestore();
+                  await addDoc(collection(db, "bikes"), {
+                        company: "kawasaky",
+                        model: "ninja 300",
+                  });
             },
-
             //Первоначальный запрос с сервера всех данных
             async fetchPosts(context) {
                   let posts = [];
@@ -153,9 +145,6 @@ export const posts = {
       },
 
       mutations: {
-            GET_STORAGE(state, download_url) {
-                  state.url = download_url;
-            },
             UPDATE_POSTS(state, posts) {
                   state.dataPosts = posts;
                   state.filteredPosts = posts;

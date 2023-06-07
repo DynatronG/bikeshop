@@ -182,8 +182,8 @@ button:hover {
     color: #FFFCF2;
 }
 
-input,
-select,textarea {
+.input,
+.select,.textarea {
     margin: 5px;
     border: 1px solid #FFFCF2;
     border-radius: 5px;
@@ -196,26 +196,26 @@ select,textarea {
     box-shadow: 0px 0px 0px #403d39;
     transition: box-shadow 0.3s ease-in;
 }
-textarea:hover{
+.textarea:hover{
     box-shadow: 0px 0px 10px #403d39;
     transition: box-shadow 0.3s ease-out;
 }
-input:hover {
+.input:hover {
     box-shadow: 0px 0px 10px #403d39;
     transition: box-shadow 0.3s ease-out;
 }
-select:hover {
+.select:hover {
     box-shadow: 0px 0px 10px #403d39;
     transition: box-shadow 0.3s ease-out;
 }
-textarea:focus {
+.textarea:focus {
     background-color: #fffcf2; 
 }
 
-input:focus {
+.input:focus {
     background-color: #fffcf2;
 }
-select:focus {
+.select:focus {
     background-color: #fffcf2;
 }
 

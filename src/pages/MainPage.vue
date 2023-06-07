@@ -85,7 +85,7 @@ export default {
             // ...mapActions({
             //       fetchPosts: "fetchPosts",
             // }),
-            ...mapActions("posts", ["fetchPosts", "getImg"]),
+            ...mapActions("posts", ["fetchPosts"]),
       },
       computed: {
             // ...mapState({ vxVar: (state) => state.allData.vxVar }),
@@ -96,11 +96,11 @@ export default {
             //       postsCount: "postsCount",
             // }),
 
-            ...mapGetters("posts", ["posts__count", "filtered__Posts", "download__url"]),
+            ...mapGetters("posts", ["posts__count", "filtered__Posts"]),
       },
       async mounted() {
             this.fetchPosts();
-            this.getImg();
+
             // ---
       },
 };
