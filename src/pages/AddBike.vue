@@ -5,7 +5,6 @@
             </div>
 
             <h4>Добавить мотоцикл в базу данных</h4>
-            <h4>Тест {{ bikes }}</h4>
             <div class="col-wrapper">
                   <form class="form">
                         <div class="col">
@@ -25,7 +24,11 @@
                         <div class="col">
                               <div class="col"><h5>Модель</h5></div>
                               <div class="col">
-                                    <input class="input" maxlength="25" v-model="bikes.model" />
+                                    <input
+                                          class="input"
+                                          maxlength="25"
+                                          v-model.trim="bikes.model"
+                                    />
                               </div>
                         </div>
                         <div class="col">
@@ -54,7 +57,7 @@
                         <div class="col">
                               <div class="col"><h5>Мощность куб.см</h5></div>
                               <div class="col">
-                                    <input class="input" type="number" v-model="bikes.cc" />
+                                    <input class="input" type="number" v-model.trim="bikes.cc" />
                               </div>
                         </div>
                         <div class="col">
@@ -73,7 +76,7 @@
                         <div class="col">
                               <div class="col"><h5>Цена $</h5></div>
                               <div class="col">
-                                    <input class="input" type="number" v-model="bikes.price" />
+                                    <input class="input" type="number" v-model.trim="bikes.price" />
                               </div>
                         </div>
                         <div class="col">
@@ -93,14 +96,14 @@
                                     <textarea
                                           class="textarea"
                                           maxlength="300"
-                                          v-model="bikes.description"
+                                          v-model.trim="bikes.description"
                                     ></textarea>
                               </div>
                         </div>
                         <div class="col">
                               <div class="col"><h5>Изображение мотоцикла</h5></div>
                               <div class="col">
-                                    <input class="input" type="file" @change="bikesImageUrl" />
+                                    <input class="input" type="file" ref="myFile" />
                               </div>
                         </div>
                         <div>
@@ -108,7 +111,12 @@
                                     class="submit-button"
                                     type="submit"
                                     value="Добавить"
-                                    @click="validate"
+                                    @click="addBike(bikes)"
+                              />
+                              <input
+                                    type="button"
+                                    value="Ссылка на картинку глобальную"
+                                    @click="getImageGlobalUrl"
                               />
                         </div>
                   </form>
@@ -117,7 +125,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { addDoc, collection, getCountFromServer, getFirestore } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { mapState } from "vuex";
+
 export default {
       data() {
             return {
@@ -132,31 +143,101 @@ export default {
                         available: false,
                         description: null,
                         id: null,
-                        image: null,
+                        image: "emptyUrl",
                   },
                   errors: {
-                        company: null,
+                        err: null,
                   },
+                  isValid: false,
+                  isImage: true,
             };
       },
       methods: {
-            bikesImageUrl(event) {
-                  this.bikes.image = event.target.value;
+            //Генератор ID
+            async setID() {
+                  const db = getFirestore();
+                  const coll = collection(db, "bikes");
+                  const snapshot = await getCountFromServer(coll);
+                  let bikesIdCount = snapshot._data.value.mapValue.fields.count.integerValue;
+                  this.bikes.id = Number(bikesIdCount) + 1;
             },
-            validate() {
-                  let isValid = true;
-                  if (!this.bikes.company) {
-                        this.errors.company = "Не заполнено поле компании";
-                        isValid = false;
+
+            //Загрузка картинки  в storage и получение ссылки загруженной картинки
+            async getImageGlobalUrl() {
+                  console.log("Загружаю...");
+                  let fileName = this.$refs.myFile.files[0];
+                  //   console.log(fileName);
+                  //Формирование нового имени картинки
+                  if (fileName !== undefined) {
+                        this.isImage = true;
+                        let newFileName =
+                              "moto/" +
+                              this.bikes.company.toLowerCase() +
+                              "/" +
+                              this.bikes.model +
+                              "_" +
+                              this.bikes.cc +
+                              "_" +
+                              this.bikes.year +
+                              "_" +
+                              this.bikes.id;
+                        //Загрузка картинки в storage
+                        const storage = getStorage();
+                        const storageRef = ref(storage, newFileName);
+                        await uploadBytes(storageRef, fileName).then(() => {
+                              console.log("Загружен!");
+                        });
+                        //Получаем ссылку загруженой картинки
+                        getDownloadURL(ref(storage, storageRef.fullPath)).then((download_url) => {
+                              console.log(download_url);
+                              this.bikes.image = download_url;
+                        });
                   } else {
-                        this.errors.company = null;
+                        alert("Не выбрана картинка");
+                        this.isImage = false;
                   }
-                  return isValid;
+            },
+
+            //Валидация данных перед отправкой байк-поста на сервер
+            validate() {
+                  let bikesKey = Object.keys(this.bikes);
+                  let bikesLength = bikesKey.length;
+                  let bikesValues = Object.values(this.bikes);
+
+                  for (let i = 0; i < bikesLength; i++) {
+                        if (bikesValues[i] === null) {
+                              console.log("Значение " + bikesValues[i] + " в поле " + bikesKey[i]);
+                              this.isValid = false;
+                        } else {
+                              this.isValid = true;
+                        }
+                  }
+            },
+
+            //Добавить байк-пост на сервер
+            async addBike(bike) {
+                  this.validate();
+                  this.getImageGlobalUrl();
+                  if (this.isValid && this.isImage) {
+                        console.log(this.isValid);
+                        const db = getFirestore();
+                        await addDoc(collection(db, "bikes"), bike);
+                  } else {
+                        console.log(
+                              "Исправте ошибку" +
+                                    "Картинка - " +
+                                    this.isImage +
+                                    " Валидация - " +
+                                    this.isValid
+                        );
+                  }
             },
       },
       computed: {
             ...mapState("posts", ["company", "dateManufacture", "motoClass"]),
-            ...mapActions("posts", ["addBike"]),
+      },
+      mounted() {
+            this.setID();
       },
 };
 </script>

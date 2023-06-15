@@ -1,6 +1,6 @@
 import {
       collection,
-      addDoc,
+      //   addDoc,
       // setDoc,
       // doc,
       getFirestore,
@@ -17,7 +17,6 @@ export const posts = {
       state: {
             dataPosts: [],
             filteredPosts: [],
-            addBikePost: [],
             company: [
                   { name: "Honda", image: "/honda.png" },
                   { name: "Suzuki", image: "/suzuki.png" },
@@ -46,15 +45,9 @@ export const posts = {
             // },
             currentDataSelected: {},
       },
+
       // =================================================================
       actions: {
-            async addBike() {
-                  const db = getFirestore();
-                  await addDoc(collection(db, "bikes"), {
-                        company: "kawasaky",
-                        model: "ninja 300",
-                  });
-            },
             //Первоначальный запрос с сервера всех данных
             async fetchPosts(context) {
                   let posts = [];
