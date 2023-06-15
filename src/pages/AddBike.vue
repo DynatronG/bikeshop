@@ -116,7 +116,7 @@
                               <input
                                     type="button"
                                     value="Ссылка на картинку глобальную"
-                                    @click="getImageGlobalUrl"
+                                    @click="addImage"
                               />
                         </div>
                   </form>
@@ -150,6 +150,7 @@ export default {
                   },
                   isValid: false,
                   isImage: true,
+                  newFileName: null,
             };
       },
       methods: {
@@ -163,14 +164,14 @@ export default {
             },
 
             //Загрузка картинки  в storage и получение ссылки загруженной картинки
-            async getImageGlobalUrl() {
+            async addImage() {
                   console.log("Загружаю...");
                   let fileName = this.$refs.myFile.files[0];
                   //   console.log(fileName);
                   //Формирование нового имени картинки
                   if (fileName !== undefined) {
                         this.isImage = true;
-                        let newFileName =
+                        this.newFileName =
                               "moto/" +
                               this.bikes.company.toLowerCase() +
                               "/" +
@@ -183,13 +184,13 @@ export default {
                               this.bikes.id;
                         //Загрузка картинки в storage
                         const storage = getStorage();
-                        const storageRef = ref(storage, newFileName);
+                        const storageRef = ref(storage, this.newFileName);
                         await uploadBytes(storageRef, fileName).then(() => {
                               console.log("Загружен!");
                         });
                         //Получаем ссылку загруженой картинки
                         getDownloadURL(ref(storage, storageRef.fullPath)).then((download_url) => {
-                              console.log(download_url);
+                              //   console.log(download_url);
                               this.bikes.image = download_url;
                         });
                   } else {
@@ -197,9 +198,10 @@ export default {
                         this.isImage = false;
                   }
             },
-
+            //Удаление загруженной картинки
+            delImage() {},
             //Валидация данных перед отправкой байк-поста на сервер
-            validate() {
+            async validate() {
                   let bikesKey = Object.keys(this.bikes);
                   let bikesLength = bikesKey.length;
                   let bikesValues = Object.values(this.bikes);
@@ -217,19 +219,12 @@ export default {
             //Добавить байк-пост на сервер
             async addBike(bike) {
                   this.validate();
-                  this.getImageGlobalUrl();
+
                   if (this.isValid && this.isImage) {
-                        console.log(this.isValid);
                         const db = getFirestore();
                         await addDoc(collection(db, "bikes"), bike);
                   } else {
-                        console.log(
-                              "Исправте ошибку" +
-                                    "Картинка - " +
-                                    this.isImage +
-                                    " Валидация - " +
-                                    this.isValid
-                        );
+                        console.log("Исправте ошибку");
                   }
             },
       },
