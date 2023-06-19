@@ -9,7 +9,7 @@
                   <form class="form">
                         <div class="col">
                               <div class="col"><h5>Компания</h5></div>
-                              <div class="col">
+                              <div class="conteiner">
                                     <select
                                           class="select"
                                           :class="{ danger: errors.company }"
@@ -19,32 +19,45 @@
                                                 {{ itemCompany.name }}
                                           </option>
                                     </select>
+                                    <small class="errors">{{ errors.company }}</small>
                               </div>
                         </div>
+
                         <div class="col">
                               <div class="col"><h5>Модель</h5></div>
-                              <div class="col">
+                              <div class="conteiner">
                                     <input
                                           class="input"
+                                          :class="{ danger: errors.model }"
                                           maxlength="25"
                                           v-model.trim="bikes.model"
                                     />
+                                    <small class="errors">{{ errors.model }}</small>
                               </div>
                         </div>
                         <div class="col">
                               <div class="col"><h5>Класс</h5></div>
-                              <div class="col">
-                                    <select class="select" v-model="bikes.klass">
+                              <div class="conteiner">
+                                    <select
+                                          class="select"
+                                          :class="{ danger: errors.klass }"
+                                          v-model="bikes.klass"
+                                    >
                                           <option v-for="itemClass in motoClass" :key="itemClass">
                                                 {{ itemClass }}
                                           </option>
                                     </select>
+                                    <small class="errors">{{ errors.klass }}</small>
                               </div>
                         </div>
                         <div class="col">
                               <div class="col"><h5>Год</h5></div>
-                              <div class="col">
-                                    <select class="select" v-model="bikes.year">
+                              <div class="conteiner">
+                                    <select
+                                          class="select"
+                                          :class="{ danger: errors.klass }"
+                                          v-model="bikes.year"
+                                    >
                                           <option
                                                 v-for="itemDate in dateManufacture"
                                                 :key="itemDate"
@@ -52,19 +65,26 @@
                                                 {{ itemDate }}
                                           </option>
                                     </select>
+                                    <small class="errors">{{ errors.year }}</small>
                               </div>
                         </div>
                         <div class="col">
                               <div class="col"><h5>Мощность куб.см</h5></div>
-                              <div class="col">
-                                    <input class="input" type="number" v-model.trim="bikes.cc" />
+                              <div class="conteiner">
+                                    <input
+                                          class="input"
+                                          :class="{ danger: errors.cc }"
+                                          type="number"
+                                          v-model.trim="bikes.cc"
+                                    />
+                                    <small class="errors">{{ errors.cc }}</small>
                               </div>
                         </div>
                         <div class="col">
                               <div class="col">
                                     <h5>В наличии</h5>
                               </div>
-                              <div class="col">
+                              <div class="conteiner">
                                     <div class="checkbox-align">
                                           <label class="b-contain">
                                                 <input type="checkbox" v-model="bikes.available" />
@@ -75,13 +95,19 @@
                         </div>
                         <div class="col">
                               <div class="col"><h5>Цена $</h5></div>
-                              <div class="col">
-                                    <input class="input" type="number" v-model.trim="bikes.price" />
+                              <div class="conteiner">
+                                    <input
+                                          class="input"
+                                          :class="{ danger: errors.price }"
+                                          type="number"
+                                          v-model.trim="bikes.price"
+                                    />
+                                    <small class="errors">{{ errors.price }}</small>
                               </div>
                         </div>
                         <div class="col">
                               <div class="col"><h5>Пробег по РФ</h5></div>
-                              <div class="col">
+                              <div class="conteiner">
                                     <div class="checkbox-align">
                                           <label class="b-contain">
                                                 <input type="checkbox" v-model="bikes.used" />
@@ -92,18 +118,27 @@
                         </div>
                         <div class="col">
                               <div class="col"><h5>Описание</h5></div>
-                              <div class="col">
+                              <div class="conteiner">
                                     <textarea
                                           class="textarea"
+                                          :class="{ danger: errors.description }"
                                           maxlength="300"
                                           v-model.trim="bikes.description"
                                     ></textarea>
+                                    <small class="errors">{{ errors.description }}</small>
                               </div>
                         </div>
                         <div class="col">
                               <div class="col"><h5>Изображение мотоцикла</h5></div>
-                              <div class="col">
-                                    <input class="input" type="file" ref="myFile" />
+                              <div class="conteiner">
+                                    <input
+                                          class="input"
+                                          :class="{ danger: errors.image }"
+                                          type="file"
+                                          ref="myFile"
+                                          @change="addImage"
+                                    />
+                                    <small class="errors">{{ errors.image }}</small>
                               </div>
                         </div>
                         <div>
@@ -112,11 +147,6 @@
                                     type="submit"
                                     value="Добавить"
                                     @click="addBike(bikes)"
-                              />
-                              <input
-                                    type="button"
-                                    value="Ссылка на картинку глобальную"
-                                    @click="addImage"
                               />
                         </div>
                   </form>
@@ -136,20 +166,29 @@ export default {
                         company: null,
                         model: null,
                         klass: null,
-                        year: 1960,
+                        year: null,
                         cc: null,
                         price: null,
                         used: false,
                         available: false,
                         description: null,
                         id: null,
-                        image: "emptyUrl",
+                        image: null,
                   },
                   errors: {
-                        err: null,
+                        company: null,
+                        model: null,
+                        klass: null,
+                        year: null,
+                        cc: null,
+                        price: null,
+                        used: null,
+                        available: null,
+                        description: null,
+                        id: null,
+                        image: null,
                   },
                   isValid: false,
-                  isImage: true,
                   newFileName: null,
             };
       },
@@ -167,7 +206,7 @@ export default {
             async addImage() {
                   console.log("Загружаю...");
                   let fileName = this.$refs.myFile.files[0];
-                  //   console.log(fileName);
+
                   //Формирование нового имени картинки
                   if (fileName !== undefined) {
                         this.isImage = true;
@@ -182,24 +221,27 @@ export default {
                               this.bikes.year +
                               "_" +
                               this.bikes.id;
+
                         //Загрузка картинки в storage
                         const storage = getStorage();
                         const storageRef = ref(storage, this.newFileName);
                         await uploadBytes(storageRef, fileName).then(() => {
                               console.log("Загружен!");
                         });
+
                         //Получаем ссылку загруженой картинки
                         getDownloadURL(ref(storage, storageRef.fullPath)).then((download_url) => {
-                              //   console.log(download_url);
+                              //   console.log("Из функции добавления картинки - " + download_url);
                               this.bikes.image = download_url;
                         });
                   } else {
                         alert("Не выбрана картинка");
-                        this.isImage = false;
                   }
             },
+
             //Удаление загруженной картинки
             delImage() {},
+
             //Валидация данных перед отправкой байк-поста на сервер
             async validate() {
                   let bikesKey = Object.keys(this.bikes);
@@ -208,7 +250,8 @@ export default {
 
                   for (let i = 0; i < bikesLength; i++) {
                         if (bikesValues[i] === null) {
-                              console.log("Значение " + bikesValues[i] + " в поле " + bikesKey[i]);
+                              this.errors[bikesKey[i]] = "ошибка в " + bikesKey[i];
+                              //   console.log(this.errors[bikesKey[i]]);
                               this.isValid = false;
                         } else {
                               this.isValid = true;
@@ -219,8 +262,7 @@ export default {
             //Добавить байк-пост на сервер
             async addBike(bike) {
                   this.validate();
-
-                  if (this.isValid && this.isImage) {
+                  if (this.isValid) {
                         const db = getFirestore();
                         await addDoc(collection(db, "bikes"), bike);
                   } else {
@@ -268,6 +310,13 @@ h5 {
       justify-content: space-between;
       padding: 1px;
 }
+.row {
+      display: flex;
+}
+.conteiner {
+      width: 50%;
+      /* display: flex; */
+}
 .description {
       size: 200;
 }
@@ -281,12 +330,12 @@ h5 {
       height: 200px;
 }
 .textarea,
-.input {
-      width: 395px;
-}
+.input,
 .select {
-      width: 400px;
+      /* width: 395px; */
+      width: 100%;
 }
+
 .danger {
       border-color: #eb5e28;
 }
@@ -320,5 +369,8 @@ h5 {
 .submit-button:hover {
       background: #78746d;
       color: #fffcf2;
+}
+.errors {
+      display: block;
 }
 </style>

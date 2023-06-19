@@ -192,7 +192,7 @@ button:hover {
     color: #252422;
     display: block;
     outline: none;
-    width: 150px;
+    height: 24pt;
     box-shadow: 0px 0px 0px #403d39;
     transition: box-shadow 0.3s ease-in;
 }
