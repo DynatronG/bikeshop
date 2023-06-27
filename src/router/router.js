@@ -1,6 +1,7 @@
 import About from "@/pages/AboutPage";
 import Main from "@/pages/MainPage";
 import AddBike from "@/pages/AddBike";
+import LoginPage from "@/pages/LoginPage";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
             component: About,
       },
       { path: "/addBike", component: AddBike },
+      { path: "/login", component: LoginPage },
 ];
 const router = createRouter({
       routes,

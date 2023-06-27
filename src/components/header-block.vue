@@ -8,7 +8,7 @@
                   <h4 class="txt_navigator">
                         <router-link to="/addBike">Добавить мотоцикл</router-link>
                   </h4>
-                  <h4 class="txt_navigator">Войти</h4>
+                  <h4 class="txt_navigator"><router-link to="/login">Войти</router-link></h4>
             </nav>
       </header>
 </template>

@@ -1,7 +1,7 @@
 <template>
       <div class="bike-wrapper">
             <div class="col">
-                  <router-link to="/"><button>Назад</button></router-link>
+                  <router-link to="/"><button @click="reset">Назад</button></router-link>
             </div>
 
             <h4>Добавить мотоцикл в базу данных</h4>
@@ -188,8 +188,10 @@ export default {
                         id: null,
                         image: null,
                   },
-                  isValid: false,
-                  newFileName: null,
+                  isValidData: false,
+                  newfilePath: null,
+                  isImageLoadedOnServer: false,
+                  isLoaded: false,
             };
       },
       methods: {
@@ -204,13 +206,13 @@ export default {
 
             //Загрузка картинки  в storage и получение ссылки загруженной картинки
             async addImage() {
-                  console.log("Загружаю...");
-                  let fileName = this.$refs.myFile.files[0];
+                  this.validateAllForm(true);
+                  let filePath = this.$refs.myFile.files[0];
 
                   //Формирование нового имени картинки
-                  if (fileName !== undefined) {
-                        this.isImage = true;
-                        this.newFileName =
+                  if (filePath !== undefined && this.isValidData) {
+                        console.log("Загружаю...");
+                        this.newfilePath =
                               "moto/" +
                               this.bikes.company.toLowerCase() +
                               "/" +
@@ -224,52 +226,82 @@ export default {
 
                         //Загрузка картинки в storage
                         const storage = getStorage();
-                        const storageRef = ref(storage, this.newFileName);
-                        await uploadBytes(storageRef, fileName).then(() => {
+                        const storageRef = ref(storage, this.newfilePath);
+                        await uploadBytes(storageRef, filePath).then(() => {
                               console.log("Загружен!");
+                              this.isImageLoadedOnServer = true;
                         });
 
                         //Получаем ссылку загруженой картинки
                         getDownloadURL(ref(storage, storageRef.fullPath)).then((download_url) => {
-                              //   console.log("Из функции добавления картинки - " + download_url);
                               this.bikes.image = download_url;
                         });
                   } else {
-                        alert("Не выбрана картинка");
+                        this.isImageLoadedOnServer = false;
                   }
             },
 
             //Удаление загруженной картинки
-            delImage() {},
+            delImage() {
+                  if (this.isImageLoadedOnServer && !this.isLoaded) {
+                        console.log("Картинка загружена, можно удалять!");
+                  }
+            },
 
             //Валидация данных перед отправкой байк-поста на сервер
-            async validate() {
-                  let bikesKey = Object.keys(this.bikes);
+            async validateAllForm(imgValid = false) {
+                  let cloneBikes = {};
+                  this.errors = {};
+                  if (imgValid) {
+                        cloneBikes = {
+                              company: this.bikes.company,
+                              model: this.bikes.model,
+                              cc: this.bikes.cc,
+                              year: this.bikes.year,
+                        };
+                  } else {
+                        cloneBikes = Object.assign({}, this.bikes);
+                  }
+
+                  let bikesKey = Object.keys(cloneBikes);
                   let bikesLength = bikesKey.length;
-                  let bikesValues = Object.values(this.bikes);
+                  let bikesValues = Object.values(cloneBikes);
 
                   for (let i = 0; i < bikesLength; i++) {
                         if (bikesValues[i] === null) {
-                              this.errors[bikesKey[i]] = "ошибка в " + bikesKey[i];
-                              //   console.log(this.errors[bikesKey[i]]);
-                              this.isValid = false;
+                              this.errors[bikesKey[i]] = "Отсутствуют данные ";
+                              this.isValidData = false;
                         } else {
-                              this.isValid = true;
+                              this.isValidData = true;
                         }
                   }
             },
 
             //Добавить байк-пост на сервер
             async addBike(bike) {
-                  this.validate();
-                  if (this.isValid) {
+                  this.validateAllForm(false);
+                  if (this.isValidData) {
                         const db = getFirestore();
                         await addDoc(collection(db, "bikes"), bike);
+                        this.isLoaded = true;
                   } else {
                         console.log("Исправте ошибку");
+                        this.isLoaded = false;
                   }
             },
+
+            //Сброс данных
+            reset() {
+                  this.errors = {};
+                  this.bikes = {};
+                  this.isValidData = false;
+                  this.newfilePath = null;
+                  this.isImageLoadedOnServer = false;
+                  this.isLoaded = false;
+                  this.delImage();
+            },
       },
+
       computed: {
             ...mapState("posts", ["company", "dateManufacture", "motoClass"]),
       },
@@ -315,7 +347,8 @@ h5 {
 }
 .conteiner {
       width: 50%;
-      /* display: flex; */
+      display: flex;
+      flex-wrap: wrap;
 }
 .description {
       size: 200;
